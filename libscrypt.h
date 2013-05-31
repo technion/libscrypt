@@ -31,4 +31,7 @@ int crypto_scrypt(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
  */
 void crypto_scrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs);
 
+/* Converts a series of input parameters to a MCF form for storage */
+void crypto_scrypt_mcf(uint32_t N, uint8_t r, uint8_t p, char *salt, char *hash, char *mcf);
+
 #endif /* !_CRYPTO_SCRYPT_H_ */
