@@ -86,6 +86,12 @@ int main()
 
 	printf("The MCF for this string is:\n%s", mcf);
 
+	printf("Testing salt generator\n");
+	scrypt_salt_gen(saltbuf, 16);
+	modp_b64_encode(outbuf, (char*)saltbuf, 16);
+	printf("Generated %s, I guess it's random?\n", outbuf);
+	
+
 	return 0;
 }
 

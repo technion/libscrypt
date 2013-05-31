@@ -34,4 +34,8 @@ void crypto_scrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs);
 /* Converts a series of input parameters to a MCF form for storage */
 void crypto_scrypt_mcf(uint32_t N, uint8_t r, uint8_t p, char *salt, char *hash, char *mcf);
 
+/* Generates a salt. This is not a cryptographically unpredictable function,
+ * but should produce appropriately randomised output for this purpose
+ */
+void scrypt_salt_gen(char *rand, size_t len);
 #endif /* !_CRYPTO_SCRYPT_H_ */
