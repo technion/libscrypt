@@ -20,5 +20,5 @@ void crypto_scrypt_mcf(uint32_t N, uint8_t r, uint8_t p, char *salt, char *hash,
 	params = (r << 8) + p;
 	params += (uint32_t)t << 16;
 	
-	sprintf(mcf, "$s0$%06x$%s$%s\n", params, salt, hash);
+	sprintf(mcf, "$s0$%06x$%s$%s", params, salt, hash);
 }	

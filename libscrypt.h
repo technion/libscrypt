@@ -38,4 +38,7 @@ void crypto_scrypt_mcf(uint32_t N, uint8_t r, uint8_t p, char *salt, char *hash,
  * but should produce appropriately randomised output for this purpose
  */
 void scrypt_salt_gen(char *rand, size_t len);
+
+/* Checks a given MCF against a password */
+int scrypt_check(char *mcf, char *password);
 #endif /* !_CRYPTO_SCRYPT_H_ */

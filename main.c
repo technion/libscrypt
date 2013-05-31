@@ -9,11 +9,13 @@
 
 #define REF2 "7023bdcb3afd7348461c06cd81fd38ebfda8fbba904f8e3ea9b543f6545da1f2d5432955613f0fcf62d49705242a9af9e61e85dc0d651e40dfcf017b45575887"
 
+
 int main()
 {
 	uint8_t hashbuf[64];
 	char outbuf[132];
 	char mcf[256];
+	char mcf2[256];
 	char saltbuf[64];
 	int retval;
 	/**
@@ -84,13 +86,44 @@ int main()
 
 	crypto_scrypt_mcf(16384, 8, 1, saltbuf, outbuf, mcf);
 
-	printf("The MCF for this string is:\n%s", mcf);
+	/* Since later calls to scrypt_check() butcher mcf, make a second */
+	strcpy(mcf2, mcf);
 
 	printf("Testing salt generator\n");
 	scrypt_salt_gen(saltbuf, 16);
 	modp_b64_encode(outbuf, (char*)saltbuf, 16);
 	printf("Generated %s, I guess it's random?\n", outbuf);
 	
+	/* Since scrypt)check butchers mcf - make a copy */
+	retval = scrypt_check(mcf, "pleaseletmein");
+
+	if(retval < 0)
+	{
+		printf("pleaseletmein hash failed to calculate\n");
+		exit(EXIT_FAILURE);
+	}
+	if(retval == 0)
+	{
+		printf("pleaseletmein hash claimed did not verify\n");
+		exit(EXIT_FAILURE);
+	}
+	/* retval >0 is a success */
+	printf("Successfully tested pleaseletmein\n");
+	
+	retval = scrypt_check(mcf2, "pleasefailme");
+
+	if(retval < 0)
+	{
+		printf("deliberate failhash failed to calculate\n");
+		exit(EXIT_FAILURE);
+	}
+	if(retval > 0)
+	{
+		printf("pleaseletmein deliberate fail hash has passed\n");
+		exit(EXIT_FAILURE);
+	}
+
+	printf("deliberate failhash failed\n");
 
 	return 0;
 }
