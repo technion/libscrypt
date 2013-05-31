@@ -38,7 +38,7 @@
 #include "sha256.h"
 #include "sysendian.h"
 
-#include "crypto_scrypt.h"
+#include "libscrypt.h"
 
 static void blkcpy(void *, void *, size_t);
 static void blkxor(void *, void *, size_t);

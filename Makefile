@@ -9,7 +9,7 @@ library: $(OBJS)
 	ar rcs libscrypt.a  $(OBJS)
 
 reference: library main.o
-	gcc -o reference main.o libscrypt.a
+	gcc -Wall -o reference main.o libscrypt.a
 clean:
 	rm -f *.o reference libscrypt.a
 
