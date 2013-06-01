@@ -124,6 +124,8 @@ int main()
 	}
 
 	printf("deliberate failhash failed\n");
+	crypto_scrypt_hash(outbuf, "My cats's breath smells like cat food", 16384, 8, 1);
+	printf("Received the following from simple hash:\n%s\n", outbuf);
 
 	return 0;
 }

@@ -5,7 +5,7 @@
 
 #include <math.h>
 
-void crypto_scrypt_mcf(uint32_t N, uint8_t r, uint8_t p, char *salt, char *hash, char *mcf)
+void crypto_scrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf)
 {
 
 
@@ -13,9 +13,9 @@ void crypto_scrypt_mcf(uint32_t N, uint8_t r, uint8_t p, char *salt, char *hash,
 	double t;
 
 	t = log2(N);
-
+	
 	if (t != (int)t)
-		return; /* Not a valid state */
+		printf("Failed"); /* Not a valid state */
 		
 	params = (r << 8) + p;
 	params += (uint32_t)t << 16;
