@@ -29,10 +29,10 @@ int crypto_scrypt(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
  * Converts a binary string to a hex representation of that string
  * outbuf must have size of at least buf * 2 + 1.
  */
-void crypto_scrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs);
+int crypto_scrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs);
 
 /* Converts a series of input parameters to a MCF form for storage */
-void crypto_scrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf);
+int crypto_scrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf);
 
 /* Generates a salt. This is not a cryptographically unpredictable function,
  * but should produce appropriately randomised output for this purpose

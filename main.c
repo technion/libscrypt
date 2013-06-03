@@ -30,102 +30,184 @@ int main()
     uint32_t, uint32_t, uint8_t *, size_t);
 */
 
-	printf("Hashing with password password with salt NaCL\n");
+	printf("TEST ONE: Direct call to reference function with password 'password' and salt 'NaCL'\n");
 
 	retval = crypto_scrypt((uint8_t*)"password",strlen("password"), (uint8_t*)"NaCl", strlen("NaCl"), 1024, 8, 16, hashbuf, sizeof(hashbuf));
 
 	if(retval != 0)
 	{
-		printf("Failed to create hash of \"password\"\\n");
+		printf("TEST ONE FAILED: Failed to create hash of \"password\"\\n");
 		exit(EXIT_FAILURE);
 	}
 
+	printf("TEST ONE: SUCCESSFUL\n");
+
 	/* Convert the binary string to hex representation. Outbuf must be
 	* at least sizeof(hashbuf) * 2 + 1
+	* Returns 0 on fail, 1 on success
 	*/
-	crypto_scrypt_hexconvert(hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
-	printf("Hex output is:\n%s\n", outbuf);
+	printf("TEST TWO: Convert binary output to hex\n");
+	retval = crypto_scrypt_hexconvert(hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
+	if(!retval)
+	{
+		printf("TEST TWO: FAILED\n");
+		exit(EXIT_FAILURE);
+	}
+	printf("TEST TWO: SUCCESSFUL, Hex output is:\n%s\n", outbuf);
 
+	printf("TEST THREE: Compare hex output to reference hash output\n");
+
+	/* REF1 is a reference vector from Colin's implementation. */
 	if(strcmp(outbuf, REF1) != 0)
 	{
-		printf("Failed to match reference on hash\n");
+		printf("TEST THREE: FAILED to match reference on hash\n");
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		printf("Test vector matched!\n");
+		printf("TEST THREE: SUCCESSUL, Test vector matched!\n");
 	}
 
-	printf("Second test vector: pleaseletmein with SodiumChloride as salt\n");
+	printf("TEST FOUR: Direct call to reference function with pleaseletmein password and SodiumChloride as salt\n");
+
+	/* Tests 4-6 repeat tests 1-3 with a different reference vector */
+
 	retval = crypto_scrypt((uint8_t*)"pleaseletmein",strlen("pleaseletmein"), (uint8_t*)"SodiumChloride", strlen("SodiumChloride"), 16384, 8, 1, hashbuf, sizeof(hashbuf));
 
 	if(retval != 0)
 	{
-		printf("Failed to create hash of \"pleaseletmein\"\\n");
+		printf("TEST FOUR FAILED: Failed to create hash of 'pleaseletmein'\n");
 		exit(EXIT_FAILURE);
 	}
+
+	printf("TEST FOUR: SUCCESSFUL\n");
 
 	/* Convert the binary string to hex representation. Outbuf must be
 	* at least sizeof(hashbuf) * 2 + 1
 	*/
-	crypto_scrypt_hexconvert(hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
-	printf("Hex output is:\n%s\n", outbuf);
+	printf("TEST FIVE: Convert binary output to hex\n");
+	retval = crypto_scrypt_hexconvert(hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
+	if(!retval)
+	{
+		printf("TEST FIVE: FAILED\n");
+		exit(EXIT_FAILURE);
+	}
+	printf("TEST FIVE: SUCCESSFUL, Hex output is:\n%s\n", outbuf);
+
+	printf("TEST SIX: Compare hex output to reference hash output\n");
 
 	if(strcmp(outbuf, REF2) != 0)
 	{
-		printf("Failed to match reference on hash\n");
+		printf("TEST SIX: FAILED to match reference on hash\n");
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		printf("Test vector matched!\n");
+		printf("TEST SIX: SUCCESSUL, Test vector matched!\n");
 	}
 
-	modp_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
-	modp_b64_encode(saltbuf, "SodiumChloride", strlen("SodiumChloride"));
+	/* This function will convert the binary output to BASE64. Although
+	* we converted to hex for the reference vectors, BASE64 is more useful.
+	* Returns -1 on error, else returns length.
+	* Correct buffer length can be determined using the below function if
+	retuired.
+	* char* dest = (char*) malloc(modp_b64_encode_len);
+	*/
 
-	crypto_scrypt_mcf(16384, 8, 1, saltbuf, outbuf, mcf);
+	printf("TEST SEVEN: BASE64 encoding the salt and hash output\n");
+
+	retval = modp_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
+	if(retval == -1)
+	{
+		printf("TEST SEVEN FAILED\n");
+		exit(EXIT_FAILURE);
+	}
+	retval = modp_b64_encode(saltbuf, "SodiumChloride", strlen("SodiumChloride"));
+	if(retval == -1)
+	{
+		printf("TEST SEVEN FAILED\n");
+		exit(EXIT_FAILURE);
+	}
+
+	printf("TEST SEVEN: SUCCESSFUL\n");
+
+	printf("TEST EIGHT: Create an MCF format output\n");
+
+	/* Creates a standard format output
+	* int crypto_scrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf); 
+	* Returns 0 on error, most likely reason is log2(N) not an integer.
+	*/
+	retval = crypto_scrypt_mcf(16384, 8, 1, saltbuf, outbuf, mcf);
+	if(!retval)
+	{
+		printf("TEST EIGHT FAILED\n");
+		exit(EXIT_FAILURE);
+	}
+
+	printf("TEST EIGHT: SUCCESSFUL, calculated mcf\n%s\n", mcf);
 
 	/* Since later calls to scrypt_check() butcher mcf, make a second */
 	strcpy(mcf2, mcf);
 
-	printf("Testing salt generator\n");
-	scrypt_salt_gen(saltbuf, 16);
-	modp_b64_encode(outbuf, (char*)saltbuf, 16);
-	printf("Generated %s, I guess it's random?\n", outbuf);
+	/* Couldn't be simpler - for a given mcf, check is the password is valid
+	* Returns < 0 on failure to calculate hash
+	* 0 if password incorrect
+	* >1 if password correct
+	*/
 	
-	/* Since scrypt)check butchers mcf - make a copy */
+	printf("TEST NINE: Password verify on given MCF\n");
 	retval = scrypt_check(mcf, "pleaseletmein");
 
 	if(retval < 0)
 	{
-		printf("pleaseletmein hash failed to calculate\n");
+		printf("TEST NINE: FAILED, hash failed to calculate\n");
 		exit(EXIT_FAILURE);
 	}
 	if(retval == 0)
 	{
-		printf("pleaseletmein hash claimed did not verify\n");
+		printf("TEST NINE: FAILED, claimed pleaseletmein hash claimed did not verify\n");
 		exit(EXIT_FAILURE);
 	}
 	/* retval >0 is a success */
-	printf("Successfully tested pleaseletmein\n");
+	printf("TEST NINE: SUCCESSFUL,  tested pleaseletmein password\n");
 	
+	printf("TEST TEN: Password verify on same MCF, incorrect password\n");
 	retval = scrypt_check(mcf2, "pleasefailme");
 
 	if(retval < 0)
 	{
-		printf("deliberate failhash failed to calculate\n");
+		printf("TEST TEN: FAILED, hash failed to calculate\n");
 		exit(EXIT_FAILURE);
 	}
 	if(retval > 0)
 	{
-		printf("pleaseletmein deliberate fail hash has passed\n");
+		printf("TEST TEN: FAILED,  fail hash has passed\n");
 		exit(EXIT_FAILURE);
 	}
 
-	printf("deliberate failhash failed\n");
-	crypto_scrypt_hash(outbuf, "My cats's breath smells like cat food", 16384, 8, 1);
-	printf("Received the following from simple hash:\n%s\n", outbuf);
+	printf("TEST TEN: SUCCESSFUL, refused incorrect password\n");
+
+	printf("TEST ELEVEN: Testing salt generator\n");
+	/* TODO: I'm not presently sure how this function could fail */
+	scrypt_salt_gen(saltbuf, 16);
+
+	retval = modp_b64_encode(saltbuf, (char*)saltbuf, 16);
+	if(retval == -1)
+	{
+		printf("TEST ELEVEN FAILED\n");
+		exit(EXIT_FAILURE);
+	}
+	printf("TEST ELEVEN: SUCCESSFUL, Generated %s\n", outbuf);
+
+	printf("TEST TWELVE: Simple hash creation\n");
+
+	retval = crypto_scrypt_hash(outbuf, "My cats's breath smells like cat food", 16384, 8, 16);
+	if(!retval)
+	{
+		printf("TEST TWELVE: FAILED, Failed to create simple hash\n");
+		exit(EXIT_FAILURE);
+	}
+	printf("TEST TWELVE: SUCCESSSFUL. Received the following from simple hash:\n%s\n", outbuf);
 
 	return 0;
 }
