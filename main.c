@@ -201,7 +201,7 @@ int main()
 
 	printf("TEST TWELVE: Simple hash creation\n");
 
-	retval = crypto_scrypt_hash(outbuf, "My cats's breath smells like cat food", 16384, 8, 16);
+	retval = crypto_scrypt_hash(outbuf, "My cats's breath smells like cat food", SCRYPT_N, SCRYPT_r, SCRYPT_p);
 	if(!retval)
 	{
 		printf("TEST TWELVE: FAILED, Failed to create simple hash\n");

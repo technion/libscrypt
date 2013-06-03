@@ -44,4 +44,9 @@ int scrypt_check(char *mcf, char *password);
 
 /* Creates a hash of a passphrase using a randomly generated salt */
 int crypto_scrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
+
+/* Sane default values */
+#define SCRYPT_N 16384
+#define SCRYPT_r 8
+#define SCRYPT_p 16
 #endif /* !_CRYPTO_SCRYPT_H_ */
