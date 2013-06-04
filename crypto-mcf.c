@@ -5,6 +5,16 @@
 
 #include <math.h>
 
+/* Although log2 exists in GNU99 C, more portable code shouldn't use it
+* Note that this function returns a float and hence is not compatible with the
+* GNU prototype
+*/
+static float scrypt_log2( uint32_t n )  
+{  
+    // log(n)/log(2) is log2.  
+    return (float)(log( n ) / log( 2 ));  
+}
+
 int crypto_scrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf)
 {
 
@@ -15,7 +25,7 @@ int crypto_scrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash
 	if(!mcf || !hash)
 		return 0;
 
-	t = log2(N);
+	t = scrypt_log2(N);
 	
 	if (t != (int)t)
 		return 0; /* Not a valid state */
