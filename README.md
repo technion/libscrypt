@@ -25,6 +25,8 @@ Output stored in "outbuf" is stored in a standardised MCF form, which means incl
 > retval = 0 password incorrect
 > retval > 0 pass
 
+mcf should be defined as at least SCRYPT_MCF_LEN in size.
+
 A number of internal functions are exposed, and users wishing to create more complex use cases should consult the header file, which is aimed at documenting the API fully.
 
 The test reference is also aimed at providing a well documented use case.
