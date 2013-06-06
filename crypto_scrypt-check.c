@@ -6,7 +6,7 @@
 #include "libscrypt.h"
 #include "modp_b64.h"
 
-int scrypt_check(char *mcf, char *password)
+int libscrypt_check(char *mcf, char *password)
 {
 
 	uint32_t params;
@@ -40,7 +40,7 @@ int scrypt_check(char *mcf, char *password)
 	*/
 
 	retval = modp_b64_decode(salt, tok, strlen(tok));
-	retval = crypto_scrypt((uint8_t*)password,strlen(password), (uint8_t*)salt, retval, N, r, p, hashbuf, sizeof(hashbuf));
+	retval = libscrypt_scrypt((uint8_t*)password,strlen(password), (uint8_t*)salt, retval, N, r, p, hashbuf, sizeof(hashbuf));
 
 	if (retval != 0)
 		return retval;

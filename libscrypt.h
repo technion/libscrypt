@@ -13,7 +13,7 @@
  * must satisfy r * p < 2^30 and buflen <= (2^32 - 1) * 32.  The parameter N
  * must be a power of 2 greater than 1.
  *
- * crypto_scrypt(passwd, passwdlen, salt, saltlen, N, r, p, buf, buflen):
+ * libscrypt_scrypt(passwd, passwdlen, salt, saltlen, N, r, p, buf, buflen):
  * password; duh
  * N: CPU AND RAM cost (first modifier)
  * r: RAM Cost
@@ -22,28 +22,28 @@
  * standard unless you want to modify the CPU/RAM ratio.
  * Return 0 on success; or -1 on error.
  */
-int crypto_scrypt(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
+int libscrypt_scrypt(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
     uint32_t, uint32_t, uint8_t *, size_t);
 
 /**
  * Converts a binary string to a hex representation of that string
  * outbuf must have size of at least buf * 2 + 1.
  */
-int crypto_scrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs);
+int libscrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs);
 
 /* Converts a series of input parameters to a MCF form for storage */
-int crypto_scrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf);
+int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf);
 
 /* Generates a salt. This is not a cryptographically unpredictable function,
  * but should produce appropriately randomised output for this purpose
  */
-void scrypt_salt_gen(char *rand, size_t len);
+void libscrypt_salt_gen(char *rand, size_t len);
 
 /* Checks a given MCF against a password */
-int scrypt_check(char *mcf, char *password);
+int libscrypt_check(char *mcf, char *password);
 
 /* Creates a hash of a passphrase using a randomly generated salt */
-int crypto_scrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
+int libscrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
 
 /* Sane default values */
 #define SCRYPT_HASH_LEN 64 /* This can be user defined - 

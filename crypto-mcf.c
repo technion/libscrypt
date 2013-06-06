@@ -15,7 +15,7 @@ static float scrypt_log2( uint32_t n )
     return (float)(log( n ) / log( 2 ));  
 }
 
-int crypto_scrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf)
+int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf)
 {
 
 

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
-int crypto_scrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs)
+int libscrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs)
 {
 
         int i;

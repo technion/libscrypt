@@ -5,7 +5,7 @@
 #include "sha256.h"
 
 
-void scrypt_salt_gen(char *rand, size_t len)
+void libscrypt_salt_gen(char *rand, size_t len)
 {
 
 	unsigned char buf[32];

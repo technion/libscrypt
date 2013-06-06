@@ -14,10 +14,10 @@ http://www.lolware.net/libscrypt.html
 Simple hashing interface
 
 A hash can be generated using the following function:
-> int crypto_scrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p)
+> int libscrypt_scrypt(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p)
 
 Sane constants have been created for N, r and p so you can create a has like this:
-> crypto_scrypt_hash(outbuf, "My cats's breath smells like cat food", SCRYPT_N, SCRYPT_r, SCRYPT_p);
+> libscrypt_scrypt(outbuf, "My cats's breath smells like cat food", SCRYPT_N, SCRYPT_r, SCRYPT_p);
 
 Output stored in "outbuf" is stored in a standardised MCF form, which means includes the randomly created, 128 bit salt, all N, r and p values, and a BASE64 encoded version of the hash. The entire MCF can be stored in a database, and compared for use as below:
 > retval = scrypt_check(mcf, "pleasefailme");
