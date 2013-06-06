@@ -4,7 +4,6 @@
 #include <math.h>
 
 #include "libscrypt.h"
-#include "modp_b64.h"
 
 int libscrypt_check(char *mcf, char *password)
 {
@@ -39,13 +38,13 @@ int libscrypt_check(char *mcf, char *password)
 	printf("We've obtained salt 'N' r p of '%s' %d %d %d\n", tok, N,r,p);
 	*/
 
-	retval = modp_b64_decode(salt, tok, strlen(tok));
+	retval = libscrypt_b64_decode(salt, tok, strlen(tok));
 	retval = libscrypt_scrypt((uint8_t*)password,strlen(password), (uint8_t*)salt, retval, N, r, p, hashbuf, sizeof(hashbuf));
 
 	if (retval != 0)
 		return retval;
 
-	modp_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
+	libscrypt_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
 
 	tok = strtok(NULL, "$");
 

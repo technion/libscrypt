@@ -6,7 +6,7 @@ OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o mod
 
 
 library: $(OBJS)
-	gcc -shared -Wl,-soname,libscrypt.so -o libscrypt.so -lc  $(OBJS)
+	gcc -shared -Wl,-soname,libscrypt.so -Wl,--version-script=libscrypt.version -o libscrypt.so -lc  $(OBJS)
 
 reference: library main.o
 	gcc -Wall -o reference main.o -Wl,-rpath=. -L.  -lm  -lscrypt

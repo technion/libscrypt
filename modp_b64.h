@@ -57,7 +57,7 @@ BEGIN_C
  * \endcode
  *
  */
-int modp_b64_encode(char* dest, const char* str, int len);
+int libscrypt_b64_encode(char* dest, const char* str, int len);
 
 /**
  * Decode a base64 encoded string
@@ -81,7 +81,7 @@ int modp_b64_encode(char* dest, const char* str, int len);
  * if (len == -1) { error }
  * \endcode
  */
-int modp_b64_decode(char* dest, const char* src, int len);
+int libscrypt_b64_decode(char* dest, const char* src, int len);
 
 /**
  * Given a source string of length len, this returns the amount of

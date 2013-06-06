@@ -45,6 +45,10 @@ int libscrypt_check(char *mcf, char *password);
 /* Creates a hash of a passphrase using a randomly generated salt */
 int libscrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
 
+int libscrypt_b64_encode(char* dest, const char* str, int len);
+int libscrypt_b64_decode(char* dest, const char* src, int len);
+
+
 /* Sane default values */
 #define SCRYPT_HASH_LEN 64 /* This can be user defined - 
  *but 64 is the reference size

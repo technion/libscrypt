@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #include "libscrypt.h"
-#include "modp_b64.h"
 
 #define REF1 "fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640"
 
@@ -116,13 +115,13 @@ int main()
 
 	printf("TEST SEVEN: BASE64 encoding the salt and hash output\n");
 
-	retval = modp_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
+	retval = libscrypt_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
 	if(retval == -1)
 	{
 		printf("TEST SEVEN FAILED\n");
 		exit(EXIT_FAILURE);
 	}
-	retval = modp_b64_encode(saltbuf, "SodiumChloride", strlen("SodiumChloride"));
+	retval = libscrypt_b64_encode(saltbuf, "SodiumChloride", strlen("SodiumChloride"));
 	if(retval == -1)
 	{
 		printf("TEST SEVEN FAILED\n");
@@ -191,7 +190,7 @@ int main()
 	/* TODO: I'm not presently sure how this function could fail */
 	libscrypt_salt_gen(saltbuf, 16);
 
-	retval = modp_b64_encode(saltbuf, (char*)saltbuf, 16);
+	retval = libscrypt_b64_encode(saltbuf, (char*)saltbuf, 16);
 	if(retval == -1)
 	{
 		printf("TEST ELEVEN FAILED\n");

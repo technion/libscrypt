@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 #include "libscrypt.h"
-#include "modp_b64.h"
 
 int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p)
 {
@@ -21,11 +20,11 @@ int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p
 	if(retval == -1)
 		return 0;
 
-        retval = modp_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
+        retval = libscrypt_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
 	if(retval == -1)
 		return 0;
 	
-        retval = modp_b64_encode(saltbuf, salt, sizeof(salt));
+        retval = libscrypt_b64_encode(saltbuf, salt, sizeof(salt));
 	if(retval == -1)
 		return 0;
 
