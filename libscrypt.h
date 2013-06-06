@@ -46,6 +46,10 @@ int scrypt_check(char *mcf, char *password);
 int crypto_scrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
 
 /* Sane default values */
+#define SCRYPT_HASH_LEN 64 /* This can be user defined - 
+ *but 64 is the reference size
+ */
+#define SCRYPT_MCF_LEN 124 /* mcf is 120 byte + nul */
 #define SCRYPT_N 16384
 #define SCRYPT_r 8
 #define SCRYPT_p 16

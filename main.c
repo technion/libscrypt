@@ -12,10 +12,10 @@
 
 int main()
 {
-	uint8_t hashbuf[64];
+	uint8_t hashbuf[SCRYPT_HASH_LEN];
 	char outbuf[132];
-	char mcf[256];
-	char mcf2[256];
+	char mcf[SCRYPT_MCF_LEN];
+	char mcf2[SCRYPT_MCF_LEN];
 	char saltbuf[64];
 	int retval;
 	/**
