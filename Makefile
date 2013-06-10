@@ -6,13 +6,14 @@ OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o mod
 
 
 library: $(OBJS)
-	$(CC) -shared -Wl,-soname,libscrypt.so.0 -Wl,--version-script=libscrypt.version -o libscrypt.so -lc  $(OBJS)
+	$(CC) -shared -Wl,-soname,libscrypt.so.0 -Wl,--version-script=libscrypt.version -o libscrypt.so.0 -lc  $(OBJS)
 
 reference: library main.o
+	ln -s -f libscrypt.so.0 libscrypt.so
 	$(CC) -Wall -o reference main.o -Wl,-rpath=. -L.  -lm  -lscrypt
 
 clean:
-	rm -f *.o reference libscrypt.so
+	rm -f *.o reference libscrypt.so*
 
 check: all
 	./reference
