@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <float.h>
 
 #include <math.h>
 
@@ -11,10 +12,13 @@
 * Note that this function returns a float and hence is not compatible with the
 * GNU prototype
 */
-static float scrypt_log2( uint32_t n )  
+static double scrypt_log2( uint32_t n )  
 {  
-    // log(n)/log(2) is log2.  
-    return (float)(log( n ) / log( 2 ));  
+	// log(n)/log(2) is log2.  
+	double temp;
+	/* Using the temp variable keeps splint happy */
+	temp = log(2);
+	return (log((double)n) / temp);
 }
 
 int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf)
@@ -22,7 +26,8 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, ch
 
 
 	uint32_t params;
-	double t;
+	int s;
+	double t, t2, fracpart;
 
 	if(!mcf || !hash)
 		return 0;
@@ -33,10 +38,16 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, ch
 	if(r > (uint8_t)(-1) || p > (uint8_t)(-1))
 		return 0;
 
+
 	t = scrypt_log2(N);
-	
-	if (t != (int)t)
-		return 0; /* Not a valid state */
+
+	/* The "whole numebr" check below is non-trivial due to precision
+	* issues, where you could printf("%d", (int)t) and find yourself
+	* looking at (expected value) -1
+	*/
+	fracpart = modf(t, &t2);
+	if(fracpart > DBL_EPSILON)
+		return 0;
 		
 	params = (r << 8) + p;
 	params += (uint32_t)t << 16;
@@ -45,7 +56,9 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, ch
 	* determined that mcf should be defined as at least SCRYPT_MCF_LEN
 	* in length 
 	*/
-	snprintf(mcf, SCRYPT_MCF_LEN, "$s0$%06x$%s$%s", params, salt, hash);
+	s = snprintf(mcf, SCRYPT_MCF_LEN, "$s0$%06x$%s$%s", (unsigned int)params, salt, hash);
+	if (s > SCRYPT_MCF_LEN)
+		return 0;
 
 	return 1;
 }	
