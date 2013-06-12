@@ -5,6 +5,23 @@
 
 #include "libscrypt.h"
 
+/* pow() works with doubles. Sounds like it should cast to int correctly,
+* but doesn't always. This is faster anyway
+*/
+static uint16_t ipow(uint16_t base, uint32_t exp)
+{
+    uint16_t result = 1;
+    while (exp != 0)
+    {
+        if ((exp & 1) != 0)
+            result *= base;
+        exp >>= 1;
+        base *= base;
+    }
+
+    return result;
+}
+
 int libscrypt_check(char *mcf, char *password)
 {
 
@@ -25,28 +42,44 @@ int libscrypt_check(char *mcf, char *password)
 
 	tok = strtok(mcf, "$");
 	tok = strtok(NULL, "$");
-	sscanf(tok, "%x", &params);
+
+	if ( !tok )
+		return -1;
+
+	params = (uint32_t)strtoul(tok, NULL, 16);
+	if ( params == 0 )
+		return -1;
 
 	tok = strtok(NULL, "$");
+
+	if ( !tok )
+		return -1;
 
 	p = params & 0xff;
 	r = (params >> 8) & 0xff;
 	N = params >> 16;
-	N= pow(2, N);
+	N = ipow(2, N);
 
 	/* Useful debugging:
 	printf("We've obtained salt 'N' r p of '%s' %d %d %d\n", tok, N,r,p);
 	*/
 
 	retval = libscrypt_b64_decode(salt, tok, strlen(tok));
-	retval = libscrypt_scrypt((uint8_t*)password,strlen(password), (uint8_t*)salt, retval, N, r, p, hashbuf, sizeof(hashbuf));
+	if (retval < 1)
+		return -1;
+	retval = libscrypt_scrypt((uint8_t*)password,strlen(password), (uint8_t*)salt, (uint32_t)retval, N, r, p, hashbuf, sizeof(hashbuf));
 
 	if (retval != 0)
 		return retval;
 
-	libscrypt_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
+	retval = libscrypt_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
+	if (retval == 0)
+		return -1;
 
 	tok = strtok(NULL, "$");
+
+	if ( !tok )
+		return -1;
 
 	if(strcmp(tok, outbuf) == 0)
 	{

@@ -17,3 +17,8 @@ clean:
 
 check: all
 	./reference
+
+devtest:
+	splint crypto_scrypt-hexconvert.c 
+	splint crypto-mcf.c crypto_scrypt-check.c
+	splint crypto-scrypt-saltgen.c +posixlib

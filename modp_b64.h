@@ -57,7 +57,8 @@ BEGIN_C
  * \endcode
  *
  */
-int libscrypt_b64_encode(char* dest, const char* str, int len);
+#include <string.h>
+int libscrypt_b64_encode(char* dest, const char* str, size_t len);
 
 /**
  * Decode a base64 encoded string
@@ -81,7 +82,7 @@ int libscrypt_b64_encode(char* dest, const char* str, int len);
  * if (len == -1) { error }
  * \endcode
  */
-int libscrypt_b64_decode(char* dest, const char* src, int len);
+int libscrypt_b64_decode(char* dest, const char* src, size_t len);
 
 /**
  * Given a source string of length len, this returns the amount of

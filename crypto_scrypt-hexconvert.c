@@ -6,7 +6,7 @@
 int libscrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs)
 {
 
-        int i;
+        size_t i;
 	int len = 0;
 
         if (!buf || s < 1 || obs < (s * 2 + 1))
@@ -17,7 +17,12 @@ int libscrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs)
 
         for(i=0; i<=(s-1); i++)
         {
-                len += sprintf(outbuf+len, "%02x", (unsigned char) buf[i]);
+		/* snprintf(outbuf, s,"%s...", outbuf....) has undefined results
+		* and can't be used. Using offests like this makes snprintf
+		* nontrivial. we therefore have use inescure sprintf() and
+		* lengths checked elsewhere (start of function) */
+		/*@ -bufferoverflowhigh @*/ 
+                len += sprintf(outbuf+len, "%02x", (unsigned int) buf[i]);
         }
 
 	return 1;

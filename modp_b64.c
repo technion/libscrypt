@@ -71,7 +71,7 @@
 #define CHARPAD '\0'
 #endif
 
-int libscrypt_b64_encode(char* dest, const char* str, int len)
+int libscrypt_b64_encode(char* dest, const char* str, size_t len)
 {
     int i;
     const uint8_t* s = (const uint8_t*) str;
@@ -113,7 +113,7 @@ int libscrypt_b64_encode(char* dest, const char* str, int len)
 }
 
 #ifdef WORDS_BIGENDIAN   /* BIG ENDIAN -- SUN / IBM / MOTOROLA */
-int libscrypt_b64_decode(char* dest, const char* src, int len)
+int libscrypt_b64_decode(char* dest, const char* src, size_t len)
 {
     int i;
     if (len == 0) return 0;
@@ -183,7 +183,7 @@ int libscrypt_b64_decode(char* dest, const char* src, int len)
 
 #else /* LITTLE  ENDIAN -- INTEL AND FRIENDS */
 
-int libscrypt_b64_decode(char* dest, const char* src, int len)
+int libscrypt_b64_decode(char* dest, const char* src, size_t len)
 {
     int i;
     if (len == 0) return 0;

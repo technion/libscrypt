@@ -23,7 +23,7 @@
  * Return 0 on success; or -1 on error.
  */
 int libscrypt_scrypt(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
-    uint32_t, uint32_t, uint8_t *, size_t);
+    uint32_t, uint32_t, /*@out@*/ uint8_t *, size_t);
 
 /**
  * Converts a binary string to a hex representation of that string
@@ -45,8 +45,8 @@ int libscrypt_check(char *mcf, char *password);
 /* Creates a hash of a passphrase using a randomly generated salt */
 int libscrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
 
-int libscrypt_b64_encode(char* dest, const char* str, int len);
-int libscrypt_b64_decode(char* dest, const char* src, int len);
+int libscrypt_b64_encode(/*@out@*/ char* dest, const char* str, size_t len);
+int libscrypt_b64_decode(/*@out@*/ char* dest, const char* src, size_t len);
 
 
 /* Sane default values */
