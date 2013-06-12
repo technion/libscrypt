@@ -33,9 +33,13 @@ mcf should be defined as at least SCRYPT_MCF_LEN in size.
 A number of internal functions are exposed, and users wishing to create more complex use cases should consult the header file, which is aimed at documenting the API fully.
 
 The test reference is also aimed at providing a well documented use case.
+Building
+--------
+> make
+> make check
 
 Notes on Code Development
 ------------------------
 
-Once declared "stable", the master branch will always be "stable" and development will be done on branches.
+Code is now declared "stable", the master branch will always be "stable" and development will be done on branches.
 The reference machines are CentOS, Raspbian and FreeBSD, and the code is expected to compile and run on all of these before being moved to stable branch.
