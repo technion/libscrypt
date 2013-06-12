@@ -20,13 +20,10 @@ Sane constants have been created for N, r and p so you can create a has like thi
 > libscrypt_scrypt(outbuf, "My cats's breath smells like cat food", SCRYPT_N, SCRYPT_r, SCRYPT_p);
 
 Output stored in "outbuf" is stored in a standardised MCF form, which means includes the randomly created, 128 bit salt, all N, r and p values, and a BASE64 encoded version of the hash. The entire MCF can be stored in a database, and compared for use as below:
-> retval = scrypt_check(mcf, "pleasefailme");
-
-> retval < 0 error
-
-> retval = 0 password incorrect
-
-> retval > 0 pass
+    retval = scrypt_check(mcf, "pleasefailme");
+    retval < 0 error
+    retval = 0 password incorrect
+    retval > 0 pass
 
 mcf should be defined as at least SCRYPT_MCF_LEN in size.
 
@@ -35,8 +32,8 @@ A number of internal functions are exposed, and users wishing to create more com
 The test reference is also aimed at providing a well documented use case.
 Building
 --------
-> make
-> make check
+    make
+    make check
 
 Notes on Code Development
 ------------------------
