@@ -56,7 +56,7 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, ch
 	* determined that mcf should be defined as at least SCRYPT_MCF_LEN
 	* in length 
 	*/
-	s = snprintf(mcf, SCRYPT_MCF_LEN, "$s0$%06x$%s$%s", (unsigned int)params, salt, hash);
+	s = snprintf(mcf, SCRYPT_MCF_LEN,  SCRYPT_MCF_ID "$%06x$%s$%s", (unsigned int)params, salt, hash);
 	if (s > SCRYPT_MCF_LEN)
 		return 0;
 

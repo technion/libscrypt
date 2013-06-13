@@ -34,7 +34,7 @@ int libscrypt_check(char *mcf, char *password)
 	char salt[32];
 	char *tok;
 
-	if(memcmp(mcf, "$s0", 3) != 0)
+	if(memcmp(mcf, SCRYPT_MCF_ID, 3) != 0)
 	{
 		/* Only version 0 supported */
 		return -1;
