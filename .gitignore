@@ -1,4 +1,5 @@
 *.o
 *.so
 *.so.0
+*.a
 reference

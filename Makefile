@@ -14,7 +14,7 @@ reference: library main.o
 	$(CC) -Wall -o reference main.o -Wl,-rpath=. -L.  -lm  -lscrypt
 
 clean:
-	rm -f *.o reference libscrypt.so*
+	rm -f *.o reference libscrypt.so* libscrypt.a
 
 check: all
 	./reference
