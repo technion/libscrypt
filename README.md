@@ -8,7 +8,7 @@ http://www.tarsnap.com/scrypt.html
 Utilises BSD licensed BASE64 encoder here:
 http://code.google.com/p/stringencoders/
 
-Full documentation found here:
+Official project page, including stable tarballs found here:
 http://www.lolware.net/libscrypt.html
 
 Simple hashing interface
