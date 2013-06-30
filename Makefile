@@ -24,3 +24,9 @@ devtest:
 	splint crypto-mcf.c crypto_scrypt-check.c crypto_scrypt-hash.c
 	splint crypto-scrypt-saltgen.c +posixlib
 	valgrind ./reference
+
+install: library
+	install -m 0644 libscrypt.a $(DESTDIR)/usr/local/lib
+	install -m 0644 libscrypt.so.0 $(DESTDIR)/usr/local/lib
+	ln -s -f $(DESTDIR)/usr/local/lib/libscrypt.so.0 $(DESTDIR)/usr/local/lib/libscrypt.so
+	install -m 0644 libscrypt.h  $(DESTDIR)/usr/local/include
