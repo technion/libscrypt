@@ -47,7 +47,7 @@ Notes on Code Development
 ------------------------
 
 Code is now declared "stable", the master branch will always be "stable" and development will be done on branches.
-The reference machines are CentOS and Raspbian, and the code is expected to compile and run on all of these before being moved to stable branch.
+The reference machines are CentOS, FreeBSD and Raspbian, and the code is expected to compile and run on all of these before being moved to stable branch.
 Testing has also confirmed that libscrypt does compile and run on MacOS with minor Makefile edits.
 Full transparancy on the regular application of thorough testing can be found by reviewing recent test harness results here:
 http://www.lolware.net/libscrypttesting.txt
