@@ -55,3 +55,4 @@ http://www.lolware.net/libscrypttesting.txt
 Changenotes
 -----------
 v1.1a: Single Makefile line change. I wouldn't ordinarily tag this as a new "release", but the purpose here is to assist with packaging in distributions.
+v1.12: The static library is built, but no longer installed by default. You can install it with "make install-static". This is because static libraries are not typically bundled in packages.
