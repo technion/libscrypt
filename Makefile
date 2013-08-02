@@ -35,5 +35,5 @@ install: library
 	$(MAKE_DIR) $(DESTDIR) $(DESTDIR)$(PREFIX) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCLUDEDIR)
 	$(INSTALL_DATA) libscrypt.a $(DESTDIR)$(LIBDIR)
 	$(INSTALL_DATA) libscrypt.so.0 $(DESTDIR)$(LIBDIR)
-	ln -s -f $(DESTDIR)$(LIBDIR)/libscrypt.so.0 $(DESTDIR)$(LIBDIR)/libscrypt.so
+	cd $(DESTDIR)$(LIBDIR) && ln -s -f libscrypt.so.0 $(DESTDIR)$(LIBDIR)/libscrypt.so
 	$(INSTALL_DATA) libscrypt.h  $(DESTDIR)$(INCLUDEDIR)
