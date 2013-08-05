@@ -34,10 +34,9 @@ devtest:
 
 install: library
 	$(MAKE_DIR) $(DESTDIR) $(DESTDIR)$(PREFIX) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCLUDEDIR)
-	$(INSTALL_DATA) -m 0755 libscrypt.so.0 $(DESTDIR)$(LIBDIR)
+	$(INSTALL_DATA) -pm 0755 libscrypt.so.0 $(DESTDIR)$(LIBDIR)
 	cd $(DESTDIR)$(LIBDIR) && ln -s -f libscrypt.so.0 $(DESTDIR)$(LIBDIR)/libscrypt.so
-	$(INSTALL_DATA) -m 0644 libscrypt.h  $(DESTDIR)$(INCLUDEDIR)
+	$(INSTALL_DATA) -pm 0644 libscrypt.h  $(DESTDIR)$(INCLUDEDIR)
 
 install-static: libscrypt.a
-	$(INSTALL_DATA) -m 0644 libscrypt.a $(DESTDIR)$(LIBDIR)
-
+	$(INSTALL_DATA) -pm 0644 libscrypt.a $(DESTDIR)$(LIBDIR)
