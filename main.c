@@ -206,7 +206,18 @@ int main()
 		printf("TEST TWELVE: FAILED, Failed to create simple hash\n");
 		exit(EXIT_FAILURE);
 	}
-	printf("TEST TWELVE: SUCCESSSFUL. Received the following from simple hash:\n%s\n", outbuf);
+	printf("TEST TWELVE: SUCCESSFUL. Received the following from simple hash:\n%s\n", outbuf);
+
+	printf("TEST THIRTEEN: VERIFY TEST TWELVE'S HASH\n");
+
+	retval = libscrypt_check(outbuf, "My cats's breath smells like cat food");
+
+	if (retval != 1) {
+		printf("TEST THIRTEEN: FAILED TO VERIFY TEST TWELVE'S HASH\n");
+		exit(EXIT_FAILURE);
+	}
+
+	printf("TEST THIRTEEN SUCCESSFUL\n");
 
 	return 0;
 }
