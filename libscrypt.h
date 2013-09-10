@@ -53,7 +53,7 @@ int libscrypt_b64_decode(/*@out@*/ char* dest, const char* src, size_t len);
 #define SCRYPT_HASH_LEN 64 /* This can be user defined - 
  *but 64 is the reference size
  */
-#define SCRYPT_MCF_LEN 124 /* mcf is 120 byte + nul */
+#define SCRYPT_MCF_LEN 125 /* mcf is 120 byte + nul */
 #define SCRYPT_MCF_ID "$s1"
 #define SCRYPT_N 16384
 #define SCRYPT_r 8
