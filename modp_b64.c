@@ -41,14 +41,19 @@
  * </PRE>
  */
 
+#include <endian.h>
+
 /* public header */
 #include "modp_b64.h"
 
 
-/* if on motoral, sun, ibm; uncomment this */
-/* #define WORDS_BIGENDIAN 1 */
-/* else for Intel, Amd; uncomment this */
-/* #undef WORDS_BIGENDIAN */
+#if BYTE_ORDER == BIG_ENDIAN
+/* if on motoral, sun, ibm */
+#define WORDS_BIGENDIAN 1
+#else
+/* else for Intel, Amd */
+#undef WORDS_BIGENDIAN
+#endif
 
 #include "modp_b64_data.h"
 
