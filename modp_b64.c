@@ -41,7 +41,7 @@
  * </PRE>
  */
 
-#include <endian.h>
+#include "endian.h"
 
 /* public header */
 #include "modp_b64.h"
