@@ -45,8 +45,8 @@ int libscrypt_check(char *mcf, char *password);
 /* Creates a hash of a passphrase using a randomly generated salt */
 int libscrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
 
-int libscrypt_b64_encode(/*@out@*/ char* dest, const char* str, size_t len);
-int libscrypt_b64_decode(/*@out@*/ char* dest, const char* src, size_t len);
+int libscrypt_b64_encode(unsigned char const*, size_t, /*@out@*/ char*, size_t);
+int libscrypt_b64_decode(char const*, /*@out@*/ unsigned char*, size_t);
 
 
 /* Sane default values */

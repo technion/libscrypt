@@ -115,13 +115,13 @@ int main()
 
 	printf("TEST SEVEN: BASE64 encoding the salt and hash output\n");
 
-	retval = libscrypt_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
+	retval = libscrypt_b64_encode((char*)hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
 	if(retval == -1)
 	{
 		printf("TEST SEVEN FAILED\n");
 		exit(EXIT_FAILURE);
 	}
-	retval = libscrypt_b64_encode(saltbuf, "SodiumChloride", strlen("SodiumChloride"));
+	retval = libscrypt_b64_encode("SodiumChloride", strlen("SodiumChloride"), saltbuf, sizeof(saltbuf));
 	if(retval == -1)
 	{
 		printf("TEST SEVEN FAILED\n");
@@ -190,7 +190,7 @@ int main()
 	/* TODO: I'm not presently sure how this function could fail */
 	libscrypt_salt_gen(saltbuf, 16);
 
-	retval = libscrypt_b64_encode(saltbuf, (char*)saltbuf, 16);
+	retval = libscrypt_b64_encode((char*)saltbuf, 16, saltbuf, sizeof(saltbuf));
 	if(retval == -1)
 	{
 		printf("TEST ELEVEN FAILED\n");

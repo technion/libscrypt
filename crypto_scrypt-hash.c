@@ -20,11 +20,11 @@ int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p
 	if(retval == -1)
 		return 0;
 
-        retval = libscrypt_b64_encode(outbuf, (char*)hashbuf, sizeof(hashbuf));
+        retval = libscrypt_b64_encode((char*)hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
 	if(retval == -1)
 		return 0;
 	
-        retval = libscrypt_b64_encode(saltbuf, salt, sizeof(salt));
+        retval = libscrypt_b64_encode(salt, sizeof(salt), saltbuf, sizeof(saltbuf));
 	if(retval == -1)
 		return 0;
 

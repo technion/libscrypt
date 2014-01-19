@@ -9,13 +9,9 @@ CFLAGS=-O2 -Wall -g -D_FORTIFY_SOURCE=2 -fstack-protector -fPIC
 LDFLAGS=-Wl,-z,now -Wl,-z,relro
 all: reference
 
-OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o modp_b64.o crypto-scrypt-saltgen.o crypto_scrypt-check.o crypto_scrypt-hash.o
+OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o b64.o crypto-scrypt-saltgen.o crypto_scrypt-check.o crypto_scrypt-hash.o
 
-endian.h: byteorder.c
-	$(CC) byteorder.c $(CFLAGS) -o byteorder
-	./byteorder > endian.h
-
-library: endian.h $(OBJS) 
+library: $(OBJS) 
 	$(CC)  $(LDFLAGS) -shared -Wl,-soname,libscrypt.so.0 -Wl,--version-script=libscrypt.version -o libscrypt.so.0 -lc -lm  $(OBJS)
 	ar rcs libscrypt.a  $(OBJS)
 
