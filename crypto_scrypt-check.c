@@ -32,7 +32,7 @@ int libscrypt_check(char *mcf, char *password)
 	int retval;
 	uint8_t hashbuf[64];
 	char outbuf[128];
-	char salt[32];
+	uint8_t salt[32];
 	char *tok;
 
 	if(memcmp(mcf, SCRYPT_MCF_ID, 3) != 0)
@@ -65,15 +65,20 @@ int libscrypt_check(char *mcf, char *password)
 	printf("We've obtained salt 'N' r p of '%s' %d %d %d\n", tok, N,r,p);
 	*/
 
-	retval = libscrypt_b64_decode(tok, (uint8_t*)salt, sizeof(salt));
+    memset(salt, 0, sizeof(salt)); /* Keeps splint happy */
+	retval = libscrypt_b64_decode(tok, (unsigned char*)salt, sizeof(salt));
 	if (retval < 1)
 		return -1;
-	retval = libscrypt_scrypt((uint8_t*)password,strlen(password), (uint8_t*)salt, (uint32_t)retval, N, r, p, hashbuf, sizeof(hashbuf));
+
+	retval = libscrypt_scrypt((uint8_t*)password, strlen(password), salt,
+            (uint32_t)retval, N, r, p, hashbuf, sizeof(hashbuf));
 
 	if (retval != 0)
 		return retval;
 
-	retval = libscrypt_b64_encode(hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
+	retval = libscrypt_b64_encode((unsigned char*)hashbuf, sizeof(hashbuf), 
+            outbuf, sizeof(outbuf));
+
 	if (retval == 0)
 		return -1;
 
