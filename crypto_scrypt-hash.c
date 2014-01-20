@@ -3,13 +3,14 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include "b64.h"
 #include "libscrypt.h"
 
 int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p)
 {
 
 	int retval;
-	char salt[16];
+	uint8_t salt[16];
 	uint8_t	hashbuf[64];
 	char outbuf[256];
 	char saltbuf[256];
@@ -20,7 +21,7 @@ int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p
 	if(retval == -1)
 		return 0;
 
-        retval = libscrypt_b64_encode((char*)hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
+        retval = libscrypt_b64_encode(hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
 	if(retval == -1)
 		return 0;
 	

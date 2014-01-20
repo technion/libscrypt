@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "b64.h"
 #include "libscrypt.h"
 
 /* pow() works with doubles. Sounds like it should cast to int correctly,
@@ -64,7 +65,7 @@ int libscrypt_check(char *mcf, char *password)
 	printf("We've obtained salt 'N' r p of '%s' %d %d %d\n", tok, N,r,p);
 	*/
 
-	retval = libscrypt_b64_decode(tok, salt, sizeof(salt));
+	retval = libscrypt_b64_decode(tok, (uint8_t*)salt, sizeof(salt));
 	if (retval < 1)
 		return -1;
 	retval = libscrypt_scrypt((uint8_t*)password,strlen(password), (uint8_t*)salt, (uint32_t)retval, N, r, p, hashbuf, sizeof(hashbuf));
@@ -72,7 +73,7 @@ int libscrypt_check(char *mcf, char *password)
 	if (retval != 0)
 		return retval;
 
-	retval = libscrypt_b64_encode((char*)hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
+	retval = libscrypt_b64_encode(hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
 	if (retval == 0)
 		return -1;
 

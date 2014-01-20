@@ -37,16 +37,13 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, ch
 /* Generates a salt. This is not a cryptographically unpredictable function,
  * but should produce appropriately randomised output for this purpose
  */
-void libscrypt_salt_gen(/*@out@*/ char *rand, size_t len);
+void libscrypt_salt_gen(/*@out@*/ uint8_t *rand, size_t len);
 
 /* Checks a given MCF against a password */
 int libscrypt_check(char *mcf, char *password);
 
 /* Creates a hash of a passphrase using a randomly generated salt */
 int libscrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
-
-int libscrypt_b64_encode(unsigned char const*, size_t, /*@out@*/ char*, size_t);
-int libscrypt_b64_decode(char const*, /*@out@*/ unsigned char*, size_t);
 
 
 /* Sane default values */
