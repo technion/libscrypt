@@ -15,9 +15,9 @@ library: $(OBJS)
 	$(CC)  $(LDFLAGS) -shared -Wl,-soname,libscrypt.so.0 -Wl,--version-script=libscrypt.version -o libscrypt.so.0 -lc -lm  $(OBJS)
 	ar rcs libscrypt.a  $(OBJS)
 
-reference: library main.o
+reference: library main.o b64.o
 	ln -s -f libscrypt.so.0 libscrypt.so
-	$(CC) -Wall -o reference main.o -Wl,-rpath=. -L.  -lscrypt
+	$(CC) -Wall -o reference main.o  b64.o -Wl,-rpath=. -L.  -lscrypt
 
 clean:
 	rm -f *.o reference libscrypt.so* libscrypt.a endian.h

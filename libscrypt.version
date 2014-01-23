@@ -5,6 +5,5 @@ libscrypt_hexconvert;
 libscrypt_mcf; 
 libscrypt_salt_gen; 
 libscrypt_scrypt;
-libscrypt_b64_encode;
 	local: *;
 };
