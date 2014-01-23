@@ -58,3 +58,5 @@ v1.1a: Single Makefile line change. I wouldn't ordinarily tag this as a new "rel
 v1.12: The static library is built, but no longer installed by default. You can install it with "make install-static". This is because static libraries are not typically bundled in packages.
 
 v1.13: Minor packaging related update
+
+v1.15: Replaced the b64 libraries with more portable one from ISC. Now tested and verified on a wider variety of architectures. Note, libscrypt_b64_encrypt was originally an exported function. This is no longer the case as it is considered an internal function only.
