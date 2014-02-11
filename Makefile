@@ -22,7 +22,7 @@ reference: library main.o b64.o
 clean:
 	rm -f *.o reference libscrypt.so* libscrypt.a endian.h
 
-check: library
+check: all
 	./reference
 
 devtest:
