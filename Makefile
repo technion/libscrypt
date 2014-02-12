@@ -1,12 +1,12 @@
-PREFIX       = /usr/local
-LIBDIR       = $(PREFIX)/lib
-INCLUDEDIR   = $(PREFIX)/include
-MAKE_DIR     = install -d
-INSTALL_DATA = install
+PREFIX       ?= /usr/local
+LIBDIR       ?= $(PREFIX)/lib
+INCLUDEDIR   ?= $(PREFIX)/include
+MAKE_DIR     ?= install -d
+INSTALL_DATA ?= install
 
-CC=gcc
-CFLAGS=-O2 -Wall -g -D_FORTIFY_SOURCE=2 -fstack-protector -fPIC
-LDFLAGS=-Wl,-z,now -Wl,-z,relro
+CC?=gcc
+CFLAGS?=-O2 -Wall -g -D_FORTIFY_SOURCE=2 -fstack-protector -fPIC
+LDFLAGS?=-Wl,-z,now -Wl,-z,relro
 all: reference
 
 OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o b64.o crypto-scrypt-saltgen.o crypto_scrypt-check.o crypto_scrypt-hash.o
