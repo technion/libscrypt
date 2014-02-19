@@ -13,11 +13,11 @@ all: reference
 
 OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o b64.o crypto-scrypt-saltgen.o crypto_scrypt-check.o crypto_scrypt-hash.o
 
-library: $(OBJS) 
+libscrypt.so.0: $(OBJS) 
 	$(CC)  $(LDFLAGS) -shared -o libscrypt.so.0 -lc -lm  $(OBJS)
 	ar rcs libscrypt.a  $(OBJS)
 
-reference: library main.o b64.o
+reference: libscrypt.so.0 main.o b64.o
 	ln -s -f libscrypt.so.0 libscrypt.so
 	$(CC) -Wall -o reference main.o  b64.o $(CFLAGS_EXTRA) -L.  -lscrypt
 
