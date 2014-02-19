@@ -38,6 +38,12 @@ Building
     make check
 Check the Makefile for advice on linking against your application.
 
+OSX
+-----
+Please compile with:
+    make LDFLAGS= CFLAGS_EXTRA=
+
+
 BUGS
 ----
 SCRYPT_* constants are probably a little high for something like a Raspberry pi. Using '1' as SCRYPT_p is acceptable from a security and performance standpoint if needed. 
