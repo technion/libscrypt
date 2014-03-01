@@ -5,21 +5,20 @@ MAKE_DIR     ?= install -d
 INSTALL_DATA ?= install
 
 CC?=gcc
-SONAME?=libscrypt.so.0
 CFLAGS?=-O2 -Wall -g -D_FORTIFY_SOURCE=2 -fstack-protector -fPIC
-LDFLAGS?=-Wl,-z,now -Wl,-z,relro -Wl,-soname,$(SONAME) -Wl,--version-script=libscrypt.version
+LDFLAGS?=-Wl,-z,now -Wl,-z,relro -Wl,-soname,libscrypt.so.0 -Wl,--version-script=libscrypt.version
 CFLAGS_EXTRA?=-Wl,-rpath=.
 
 all: reference
 
 OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o b64.o crypto-scrypt-saltgen.o crypto_scrypt-check.o crypto_scrypt-hash.o
 
-$(SONAME): $(OBJS) 
-	$(CC)  $(LDFLAGS) -shared -o $(SONAME) -lc -lm  $(OBJS)
+libscrypt.so.0: $(OBJS) 
+	$(CC)  $(LDFLAGS) -shared -o libscrypt.so.0 -lc -lm  $(OBJS)
 	ar rcs libscrypt.a  $(OBJS)
 
-reference: $(SONAME) main.o b64.o
-	ln -s -f $(SONAME) libscrypt.so
+reference: libscrypt.so.0 main.o b64.o
+	ln -s -f libscrypt.so.0 libscrypt.so
 	$(CC) -Wall -o reference main.o  b64.o $(CFLAGS_EXTRA) -L.  -lscrypt
 
 clean:
@@ -34,10 +33,10 @@ devtest:
 	splint crypto-scrypt-saltgen.c +posixlib
 	valgrind ./reference
 
-install: $(SONAME)
+install: libscrypt.so.0
 	$(MAKE_DIR) $(DESTDIR) $(DESTDIR)$(PREFIX) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCLUDEDIR)
-	$(INSTALL_DATA) -pm 0755 $(SONAME) $(DESTDIR)$(LIBDIR)
-	cd $(DESTDIR)$(LIBDIR) && ln -s -f $(SONAME) $(DESTDIR)$(LIBDIR)/libscrypt.so
+	$(INSTALL_DATA) -pm 0755 libscrypt.so.0 $(DESTDIR)$(LIBDIR)
+	cd $(DESTDIR)$(LIBDIR) && ln -s -f libscrypt.so.0 $(DESTDIR)$(LIBDIR)/libscrypt.so
 	$(INSTALL_DATA) -pm 0644 libscrypt.h  $(DESTDIR)$(INCLUDEDIR)
 
 install-static: libscrypt.a
