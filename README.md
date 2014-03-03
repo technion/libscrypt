@@ -12,11 +12,15 @@ http://www.lolware.net/libscrypt.html
 
 Simple hashing interface
 
-A hash can be generated using the following function:
+The (reference) internal hashing function can be directly called as follows:
 
     int libscrypt_scrypt(const uint8_t *passwd, size_t passwdlen,
             const uint8_t *salt, size_t saltlen, uint64_t N, uint32_t r, 
             uint32_t p, /*@out@*/ uint8_t *buf, size_t buflen);
+
+Libscrypt's easier to use interface wraps this up to deal with the salt and produce BASE64 output as so:
+
+    int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p);
 
 Sane constants have been created for N, r and p so you can create a has like this:
 
