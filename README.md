@@ -14,7 +14,9 @@ Simple hashing interface
 
 A hash can be generated using the following function:
 
-    int libscrypt_scrypt(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p)
+    int libscrypt_scrypt(const uint8_t *passwd, size_t passwdlen,
+            const uint8_t *salt, size_t saltlen, uint64_t N, uint32_t r, 
+            uint32_t p, /*@out@*/ uint8_t *buf, size_t buflen);
 
 Sane constants have been created for N, r and p so you can create a has like this:
 
