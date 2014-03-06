@@ -14,7 +14,7 @@ all: reference
 OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o b64.o crypto-scrypt-saltgen.o crypto_scrypt-check.o crypto_scrypt-hash.o
 
 libscrypt.so.0: $(OBJS) 
-	$(CC)  $(LDFLAGS) -shared -o libscrypt.so.0 -lc -lm  $(OBJS)
+	$(CC)  $(LDFLAGS) -shared -o libscrypt.so.0  $(OBJS) -lm -lc
 	ar rcs libscrypt.a  $(OBJS)
 
 reference: libscrypt.so.0 main.o b64.o
