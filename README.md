@@ -46,9 +46,10 @@ Check the Makefile for advice on linking against your application.
 
 OSX
 -----
-Please compile with:
+Please compile and install with:
 
     make LDFLAGS= CFLAGS_EXTRA=
+    make install-osx
 
 
 BUGS
