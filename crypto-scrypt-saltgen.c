@@ -1,25 +1,62 @@
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <errno.h>
 
-#include "sha256.h"
+#ifdef _WIN32
+#include <windows.h>
+#include <wincrypt.h>
+#else
+#include <fcntl.h>
+#endif
 
-
-void libscrypt_salt_gen(uint8_t *rand, size_t len)
+int libscrypt_salt_gen(uint8_t *salt, size_t len)
 {
+	unsigned char buf[len];
+#ifdef _WIN32
+	static HCRYPTPROV provider;
+	if (!CryptAcquireContext(&provider, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT)) 
+	{
+		return -1;
+	}
 
-	unsigned char buf[32];
-	time_t current_time;
-	char *c_time_string;
+	if (!CryptGenRandom(provider, len, buf))
+	{
+		return -1;
+	}
 
-	SHA256_CTX ctx;
+	if(!CryptReleaseContext(provider, 0)) {
+		return -1;
+	}
+#else
+	int data_read = 0;
+	int urandom = open("/dev/urandom", O_RDONLY);
 
-	SHA256_Init(&ctx );
-	current_time = time(NULL);
-	c_time_string = ctime(&current_time);
-	SHA256_Update(&ctx, c_time_string, strlen(c_time_string));
-	SHA256_Final(buf, &ctx);
+	if (urandom < 0)
+	{
+		return -1;
+	}
 
-	memcpy(rand, buf, len);
+	while (data_read < len) {
+		ssize_t result = read(urandom, buf, len);
 
+		if (result < 0)
+		{
+			if (errno == EINTR) {
+				continue;	
+			}
+
+			else {
+				return -1;
+			}
+		}
+
+		data_read += result;
+	}
+
+	close(urandom);
+#endif
+	memcpy(salt, buf, len);
+	return 0;
 }

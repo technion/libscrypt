@@ -15,23 +15,26 @@ int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p
 	char outbuf[256];
 	char saltbuf[256];
 
-	libscrypt_salt_gen(salt, 16);
+	if(libscrypt_salt_gen(salt, 16) == -1)
+	{
+		return 0;
+	}
 
 	retval = libscrypt_scrypt((uint8_t*)passphrase,strlen(passphrase), (uint8_t*)salt, sizeof(salt), N, r, p, hashbuf, sizeof(hashbuf));
 	if(retval == -1)
 		return 0;
 
-        retval = libscrypt_b64_encode((unsigned char*)hashbuf, sizeof(hashbuf),
-                outbuf, sizeof(outbuf));
+	retval = libscrypt_b64_encode((unsigned char*)hashbuf, sizeof(hashbuf),
+			outbuf, sizeof(outbuf));
 	if(retval == -1)
 		return 0;
 	
-        retval = libscrypt_b64_encode((unsigned char *)salt, sizeof(salt),
-                saltbuf, sizeof(saltbuf));
+	retval = libscrypt_b64_encode((unsigned char *)salt, sizeof(salt),
+			saltbuf, sizeof(saltbuf));
 	if(retval == -1)
 		return 0;
 
-        retval = libscrypt_mcf(N, r, p, saltbuf, outbuf, dst);
+	retval = libscrypt_mcf(N, r, p, saltbuf, outbuf, dst);
 	if(retval == -1)
 		return 0;
 
