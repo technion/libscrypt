@@ -191,7 +191,7 @@ int main()
 	/* TODO: I'm not presently sure how this function could fail */
 	libscrypt_salt_gen((uint8_t*)saltbuf, 16);
 
-	retval = libscrypt_b64_encode((uint8_t*)saltbuf, 16, saltbuf, sizeof(saltbuf));
+	retval = libscrypt_b64_encode((uint8_t*)saltbuf, 16, outbuf, sizeof(outbuf));
 	if(retval == -1)
 	{
 		printf("TEST ELEVEN FAILED\n");
