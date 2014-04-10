@@ -8,7 +8,7 @@
 int libscrypt_salt_gen(uint8_t *salt, size_t len)
 {
 	unsigned char buf[len];
-	int data_read = 0;
+	size_t data_read = 0;
 	int urandom = open("/dev/urandom", O_RDONLY);
 
 	if (urandom < 0)
