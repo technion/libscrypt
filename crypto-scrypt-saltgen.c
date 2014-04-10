@@ -5,11 +5,13 @@
 #include <errno.h>
 #include <fcntl.h>
 
+#define RNGDEV "/dev/urandom"
+
 int libscrypt_salt_gen(uint8_t *salt, size_t len)
 {
 	unsigned char buf[len];
 	size_t data_read = 0;
-	int urandom = open("/dev/urandom", O_RDONLY);
+	int urandom = open(RNGDEV, O_RDONLY);
 
 	if (urandom < 0)
 	{
