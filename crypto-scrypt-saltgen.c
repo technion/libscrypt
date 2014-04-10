@@ -17,11 +17,11 @@ int libscrypt_salt_gen(uint8_t *salt, size_t len)
 	}
 
 	while (data_read < len) {
-		ssize_t result = read(urandom, buf, len);
+		ssize_t result = read(urandom, (unsigned char*)buf + data_read, len - data_read);
 
 		if (result < 0)
 		{
-			if (errno == EINTR) {
+			if (errno == EINTR || errno == EAGAIN) {
 				continue;	
 			}
 
