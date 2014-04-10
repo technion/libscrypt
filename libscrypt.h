@@ -34,8 +34,7 @@ int libscrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs);
 /* Converts a series of input parameters to a MCF form for storage */
 int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf);
 
-/* Generates a salt. Uses CryptGenRandom on Windows and /dev/urandom on 
- * Unix-based systems.
+/* Generates a salt. Uses /dev/urandom/
  */
 int libscrypt_salt_gen(/*@out@*/ uint8_t *rand, size_t len);
 
