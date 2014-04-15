@@ -129,7 +129,7 @@ libscrypt_b64_encode(src, srclength, target, targsize)
 	size_t datalength = 0;
 	u_char input[3];
 	u_char output[4];
-	int i;
+	unsigned int i;
 
 	while (2 < srclength) {
 		input[0] = *src++;
@@ -189,7 +189,8 @@ libscrypt_b64_decode(src, target, targsize)
 	u_char *target;
 	size_t targsize;
 {
-	int tarindex, state, ch;
+	int state, ch;
+    unsigned int tarindex;
 	u_char nextbyte;
 	char *pos;
 
