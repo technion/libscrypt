@@ -1,9 +1,12 @@
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <stdint.h>
 #include <errno.h>
 #include <fcntl.h>
+
+#ifndef S_SPLINT_S /* Including this here triggers a known bug in splint */
+#include <unistd.h>
+#endif
 
 #define RNGDEV "/dev/urandom"
 
@@ -35,7 +38,10 @@ int libscrypt_salt_gen(uint8_t *salt, size_t len)
 		data_read += result;
 	}
 
-	close(urandom);
+    /* Failures on close() shouldn't occur with O_RDONLY */
+	(void)close(urandom);
+
 	memcpy(salt, buf, len);
+
 	return 0;
 }
