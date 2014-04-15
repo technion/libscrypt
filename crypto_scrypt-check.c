@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "b64.h"
+#include "slowequals.h"
 #include "libscrypt.h"
 
 /* pow() works with doubles. Sounds like it should cast to int correctly,
@@ -25,6 +26,11 @@ static uint16_t ipow(uint16_t base, uint32_t exp)
 
 int libscrypt_check(char *mcf, char *password)
 {
+    /* Return values:
+     * <0 error
+     * == 0 password incorrect
+     * >0 correct password
+     */
 
 	uint32_t params;
 	uint16_t N;
@@ -87,11 +93,11 @@ int libscrypt_check(char *mcf, char *password)
 	if ( !tok )
 		return -1;
 
-	if(strcmp(tok, outbuf) == 0)
+	if(slow_equals(tok, outbuf) == 0)
 	{
-		return 1;
+		return 0;
 	}
 
-	return 0;
+	return 1; /* This is the "else" condition */
 }
 
