@@ -35,7 +35,7 @@ int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p
 		return 0;
 
 	retval = libscrypt_mcf(N, r, p, saltbuf, outbuf, dst);
-	if(retval == -1)
+	if(!retval)
 		return 0;
 
 	return 1;
