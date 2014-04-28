@@ -188,13 +188,18 @@ int main()
 	printf("TEST TEN: SUCCESSFUL, refused incorrect password\n");
 
 	printf("TEST ELEVEN: Testing salt generator\n");
-	/* TODO: I'm not presently sure how this function could fail */
-	libscrypt_salt_gen((uint8_t*)saltbuf, 16);
+
+	retval = libscrypt_salt_gen((uint8_t*)saltbuf, 16);
+	if(retval == -1)
+	{
+		printf("TEST ELEVEN (salt generate) FAILED\n");
+		exit(EXIT_FAILURE);
+    }
 
 	retval = libscrypt_b64_encode((uint8_t*)saltbuf, 16, outbuf, sizeof(outbuf));
 	if(retval == -1)
 	{
-		printf("TEST ELEVEN FAILED\n");
+		printf("TEST ELEVEN (b64 encode) FAILED\n");
 		exit(EXIT_FAILURE);
 	}
 	printf("TEST ELEVEN: SUCCESSFUL, Generated %s\n", outbuf);
