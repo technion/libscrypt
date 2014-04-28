@@ -189,14 +189,14 @@ int main()
 
 	printf("TEST ELEVEN: Testing salt generator\n");
 
-	retval = libscrypt_salt_gen((uint8_t*)saltbuf, 16);
+	retval = libscrypt_salt_gen((uint8_t*)saltbuf, SCRYPT_SALT_LEN);
 	if(retval == -1)
 	{
 		printf("TEST ELEVEN (salt generate) FAILED\n");
 		exit(EXIT_FAILURE);
     }
 
-	retval = libscrypt_b64_encode((uint8_t*)saltbuf, 16, outbuf, sizeof(outbuf));
+	retval = libscrypt_b64_encode((uint8_t*)saltbuf, SCRYPT_SALT_LEN, outbuf, sizeof(outbuf));
 	if(retval == -1)
 	{
 		printf("TEST ELEVEN (b64 encode) FAILED\n");
