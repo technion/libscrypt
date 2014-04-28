@@ -11,7 +11,7 @@ int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p
 
 	int retval;
 	uint8_t salt[16];
-	uint8_t	hashbuf[64];
+	uint8_t	hashbuf[SCRYPT_HASH_LEN];
 	char outbuf[256];
 	char saltbuf[256];
 
