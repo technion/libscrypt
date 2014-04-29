@@ -6,7 +6,8 @@
 #include "b64.h"
 #include "libscrypt.h"
 
-int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p)
+int libscrypt_hash(char *dst, const char *passphrase, uint32_t N, uint8_t r,
+		uint8_t p)
 {
 
 	int retval;
@@ -20,7 +21,8 @@ int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p
 		return 0;
 	}
 
-	retval = libscrypt_scrypt((uint8_t*)passphrase,strlen(passphrase), (uint8_t*)salt, SCRYPT_SALT_LEN, N, r, p, hashbuf, sizeof(hashbuf));
+	retval = libscrypt_scrypt((const uint8_t*)passphrase, strlen(passphrase),
+			(uint8_t*)salt, SCRYPT_SALT_LEN, N, r, p, hashbuf, sizeof(hashbuf));
 	if(retval == -1)
 		return 0;
 
