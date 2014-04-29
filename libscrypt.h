@@ -29,20 +29,23 @@ int libscrypt_scrypt(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
  * Converts a binary string to a hex representation of that string
  * outbuf must have size of at least buf * 2 + 1.
  */
-int libscrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs);
+int libscrypt_hexconvert(const uint8_t *buf, size_t s, char *outbuf,
+	size_t obs);
 
 /* Converts a series of input parameters to a MCF form for storage */
-int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, char *salt, char *hash, char *mcf);
+int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
+	const char *hash, char *mcf);
 
 /* Generates a salt. Uses /dev/urandom/
  */
 int libscrypt_salt_gen(/*@out@*/ uint8_t *rand, size_t len);
 
 /* Checks a given MCF against a password */
-int libscrypt_check(char *mcf, char *password);
+int libscrypt_check(char *mcf, const char *password);
 
 /* Creates a hash of a passphrase using a randomly generated salt */
-int libscrypt_hash(char *dst, char* passphrase, uint32_t N, uint8_t r, uint8_t p);
+int libscrypt_hash(char *dst, const char* passphrase, uint32_t N, uint8_t r,
+	uint8_t p);
 
 
 /* Sane default values */

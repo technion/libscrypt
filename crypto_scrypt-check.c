@@ -24,7 +24,7 @@ static uint16_t ipow(uint16_t base, uint32_t exp)
     return result;
 }
 
-int libscrypt_check(char *mcf, char *password)
+int libscrypt_check(char *mcf, const char *password)
 {
     /* Return values:
      * <0 error
