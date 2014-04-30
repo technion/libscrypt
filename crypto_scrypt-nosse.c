@@ -251,6 +251,10 @@ libscrypt_scrypt(const uint8_t * passwd, size_t passwdlen,
 		errno = EFBIG;
 		goto err0;
 	}
+	if (r == 0 || p == 0) {
+		errno = EINVAL;
+		goto err0;
+	}
 	if (((N & (N - 1)) != 0) || (N < 2)) {
 		errno = EINVAL;
 		goto err0;
