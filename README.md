@@ -22,7 +22,7 @@ Libscrypt's easier to use interface wraps this up to deal with the salt and prod
 
     int libscrypt_hash(char *dst, char *passphrase, uint32_t N, uint8_t r, uint8_t p);
 
-Sane constants have been created for N, r and p so you can create a has like this:
+Sane constants have been created for N, r and p so you can create a hash like this:
 
     libscrypt_hash(outbuf, "My cats's breath smells like cat food", SCRYPT_N, SCRYPT_r, SCRYPT_p);
 
@@ -34,6 +34,9 @@ Output stored in "outbuf" is stored in a standardised MCF form, which means incl
     retval > 0 pass
 
 mcf should be defined as at least SCRYPT_MCF_LEN in size.
+
+Note that libscrypt_check needs to modify the mcf string and will not return it
+to the original state. Pass it a copy if you need to keep the original mcf.
 
 A number of internal functions are exposed, and users wishing to create more complex use cases should consult the header file, which is aimed at documenting the API fully.
 
