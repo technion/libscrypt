@@ -17,9 +17,9 @@ libscrypt.so.0: $(OBJS)
 	$(CC)  $(LDFLAGS) -shared -o libscrypt.so.0  $(OBJS) -lm -lc
 	ar rcs libscrypt.a  $(OBJS)
 
-reference: libscrypt.so.0 main.o b64.o slowequals.o
+reference: libscrypt.so.0 main.o b64.o crypto_scrypt-hexconvert.o
 	ln -s -f libscrypt.so.0 libscrypt.so
-	$(CC) -Wall -o reference main.o  b64.o $(CFLAGS_EXTRA) -L.  -lscrypt
+	$(CC) -Wall -o reference main.o b64.o crypto_scrypt-hexconvert.o $(CFLAGS_EXTRA) -L.  -lscrypt
 
 clean:
 	rm -f *.o reference libscrypt.so* libscrypt.a endian.h

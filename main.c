@@ -112,6 +112,7 @@ int main()
 	* Correct buffer length can be determined using the below function if
 	retuired.
 	* char* dest = (char*) malloc(modp_b64_encode_len);
+    * Note that this is not an exported function
 	*/
 
 	printf("TEST SEVEN: BASE64 encoding the salt and hash output\n");
