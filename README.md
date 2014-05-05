@@ -65,6 +65,14 @@ The reference machines are Fedora, CentOS, FreeBSD and Raspbian, and the code is
 Full transparancy on the regular application of thorough testing can be found by reviewing recent test harness results here:
 http://www.lolware.net/libscrypttesting.txt
 
+Contact
+-------
+I can be contacted at: technion@lolware.net
+If required, my GPG key can be found at: 
+https://lolware.net/technion-GPG-KEY
+Future releases will have the Git tag signed.
+
+
 Changenotes
 -----------
 v1.1a: Single Makefile line change. I wouldn't ordinarily tag this as a new "release", but the purpose here is to assist with packaging in distributions.
@@ -77,3 +85,7 @@ v1.15: Replaced the b64 libraries with more portable one from ISC. Now tested an
 
 v1.18: God damnit Apple
 
+<a href="https://scan.coverity.com/projects/2173">
+  <img alt="Coverity Scan Build Status"
+         src="https://scan.coverity.com/projects/2173/badge.svg"/>
+ </a>
