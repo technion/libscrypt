@@ -48,6 +48,9 @@ int libscrypt_check(char *mcf, char *password)
 	}
 
 	tok = strtok(mcf, "$");
+	if ( !tok )
+		return -1;
+
 	tok = strtok(NULL, "$");
 
 	if ( !tok )
