@@ -68,8 +68,9 @@ http://www.lolware.net/libscrypttesting.txt
 Contact
 -------
 I can be contacted at: technion@lolware.net
-If required, my GPG key can be found at: 
-https://lolware.net/technion-GPG-KEY
+
+If required, my GPG key can be found at: https://lolware.net/technion-GPG-KEY
+
 Future releases will have the Git tag signed.
 
 
