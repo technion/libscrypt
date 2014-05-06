@@ -31,7 +31,7 @@ int libscrypt_salt_gen(uint8_t *salt, size_t len)
 			}
 
 			else {
-                (void)close(urandom);
+				(void)close(urandom);
 				return -1;
 			}
 		}
