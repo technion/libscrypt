@@ -86,6 +86,9 @@ v1.15: Replaced the b64 libraries with more portable one from ISC. Now tested an
 
 v1.18: God damnit Apple
 
+v1.19: Code safety cleanups. Now running Coverity.
+
+
 <a href="https://scan.coverity.com/projects/2173">
   <img alt="Coverity Scan Build Status"
          src="https://scan.coverity.com/projects/2173/badge.svg"/>
