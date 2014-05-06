@@ -39,7 +39,7 @@ int libscrypt_salt_gen(uint8_t *salt, size_t len)
 		data_read += result;
 	}
 
-    /* Failures on close() shouldn't occur with O_RDONLY */
+	/* Failures on close() shouldn't occur with O_RDONLY */
 	(void)close(urandom);
 
 	memcpy(salt, buf, len);

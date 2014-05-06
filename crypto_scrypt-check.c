@@ -26,11 +26,11 @@ static uint16_t ipow(uint16_t base, uint32_t exp)
 
 int libscrypt_check(char *mcf, char *password)
 {
-    /* Return values:
-     * <0 error
-     * == 0 password incorrect
-     * >0 correct password
-     */
+	/* Return values:
+	* <0 error
+	* == 0 password incorrect
+	* >0 correct password
+	*/
 
 	uint32_t params;
 	uint16_t N;
@@ -74,7 +74,7 @@ int libscrypt_check(char *mcf, char *password)
 	printf("We've obtained salt 'N' r p of '%s' %d %d %d\n", tok, N,r,p);
 	*/
 
-    memset(salt, 0, sizeof(salt)); /* Keeps splint happy */
+	memset(salt, 0, sizeof(salt)); /* Keeps splint happy */
 	retval = libscrypt_b64_decode(tok, (unsigned char*)salt, sizeof(salt));
 	if (retval < 1)
 		return -1;
