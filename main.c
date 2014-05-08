@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "b64.h"
+#include "crypto_scrypt-hexconvert.h"
 #include "libscrypt.h"
 
 #define REF1 "fdbabe1c9d3472007856e7190d01e9fe7c6ad7cbc8237830e77376634b3731622eaf30d92e22a3886ff109279d9830dac727afb94a83ee6d8360cbdfa2cc0640"
