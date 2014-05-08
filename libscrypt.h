@@ -25,13 +25,6 @@
 int libscrypt_scrypt(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
     uint32_t, uint32_t, /*@out@*/ uint8_t *, size_t);
 
-/**
- * Converts a binary string to a hex representation of that string
- * outbuf must have size of at least buf * 2 + 1.
- */
-int libscrypt_hexconvert(const uint8_t *buf, size_t s, char *outbuf,
-	size_t obs);
-
 /* Converts a series of input parameters to a MCF form for storage */
 int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 	const char *hash, char *mcf);
