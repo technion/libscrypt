@@ -11,7 +11,7 @@ CFLAGS_EXTRA?=-Wl,-rpath=.
 
 all: reference
 
-OBJS= crypto_scrypt-nosse.o sha256.o crypto_scrypt-hexconvert.o crypto-mcf.o b64.o crypto-scrypt-saltgen.o crypto_scrypt-check.o crypto_scrypt-hash.o slowequals.o
+OBJS= crypto_scrypt-nosse.o sha256.o crypto-mcf.o b64.o crypto-scrypt-saltgen.o crypto_scrypt-check.o crypto_scrypt-hash.o slowequals.o
 
 libscrypt.so.0: $(OBJS) 
 	$(CC)  $(LDFLAGS) -shared -o libscrypt.so.0  $(OBJS) -lm -lc
