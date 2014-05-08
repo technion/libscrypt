@@ -3,6 +3,11 @@
 #include <stdio.h>
 #include <stdint.h>
 
+/* The hexconvert function is only used to test reference vectors against
+ * known answers. The contents of this file are therefore a component
+ * to assist with test harnesses only
+ */
+
 int libscrypt_hexconvert(uint8_t *buf, size_t s, char *outbuf, size_t obs)
 {
 
