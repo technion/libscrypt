@@ -33,7 +33,7 @@ int libscrypt_check(char *mcf, const char *password)
 	*/
 
 	uint32_t params;
-	uint16_t N;
+	uint64_t N;
 	uint8_t r, p;
 	int retval;
 	uint8_t hashbuf[64];
@@ -68,6 +68,10 @@ int libscrypt_check(char *mcf, const char *password)
 	p = params & 0xff;
 	r = (params >> 8) & 0xff;
 	N = params >> 16;
+
+	if (N > SCRYPT_SAFE_N)
+		return -1;
+
 	N = ipow(2, N);
 
 	/* Useful debugging:
