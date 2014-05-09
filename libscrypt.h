@@ -45,7 +45,7 @@ int libscrypt_hash(char *dst, const char* passphrase, uint32_t N, uint8_t r,
 #define SCRYPT_HASH_LEN 64 /* This can be user defined - 
  *but 64 is the reference size
  */
-#define SCRYPT_SAFE_N 32 /* This is much higher than you want. It's just
+#define SCRYPT_SAFE_N 30 /* This is much higher than you want. It's just
 			  * a blocker for insane defines
 			  */
 #define SCRYPT_SALT_LEN 16 /* This is just a recommended size */
