@@ -6,19 +6,22 @@
 
 #include <math.h>
 
+#ifndef S_SPLINT_S /* Including this here triggers a known bug in splint */
+#include <unistd.h>
+#endif
+
 #include "libscrypt.h"
 
-/* Although log2 exists in GNU99 C, more portable code shouldn't use it
-* Note that this function returns a float and hence is not compatible with the
-* GNU prototype
-*/
-static double scrypt_log2( uint32_t n )  
-{  
-	// log(n)/log(2) is log2.  
-	double temp;
-	/* Using the temp variable keeps splint happy */
-	temp = log(2);
-	return (log((double)n) / temp);
+/* ilog2 for powers of two */
+static int scrypt_ilog2(uint32_t n)
+{
+	/* Check for a valid power of two */
+	if (n < 2 || (n & (n - 1)))
+		return -1;
+	int t = 1;
+	while ((1 << t) < n)
+		t++;
+	return t;
 }
 
 int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
@@ -27,8 +30,7 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 
 
 	uint32_t params;
-	int s;
-	double t, t2, fracpart;
+	int s, t;
 
 	if(!mcf || !hash)
 		return 0;
@@ -39,15 +41,8 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 	if(r > (uint8_t)(-1) || p > (uint8_t)(-1))
 		return 0;
 
-
-	t = scrypt_log2(N);
-
-	/* The "whole numebr" check below is non-trivial due to precision
-	* issues, where you could printf("%d", (int)t) and find yourself
-	* looking at (expected value) -1
-	*/
-	fracpart = modf(t, &t2);
-	if(fracpart > DBL_EPSILON)
+	t = scrypt_ilog2(N);
+	if (t < 1)
 		return 0;
 		
 	params = (r << 8) + p;
