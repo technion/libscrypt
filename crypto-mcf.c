@@ -20,7 +20,12 @@ static int scrypt_ilog2(uint32_t n)
 		return -1;
 	int t = 1;
 	while ((1 << t) < n)
+	{
+		if(t > SCRYPT_SAFE_N)
+			return -1; /* Check for insanity */
 		t++;
+	}
+
 	return t;
 }
 
