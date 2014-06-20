@@ -37,6 +37,7 @@ int libscrypt_salt_gen(/*@out@*/ uint8_t *rand, size_t len);
 int libscrypt_check(char *mcf, const char *password);
 
 /* Creates a hash of a passphrase using a randomly generated salt */
+/* Returns >0 on success, or 0 for fail */
 int libscrypt_hash(char *dst, const char* passphrase, uint32_t N, uint8_t r,
 	uint8_t p);
 
