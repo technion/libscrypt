@@ -227,7 +227,7 @@ smix(uint8_t * B, size_t r, uint64_t N, uint32_t * V, uint32_t * XY)
  * must satisfy r * p < 2^30 and buflen <= (2^32 - 1) * 32.  The parameter N
  * must be a power of 2 greater than 1.
  *
- * Return 0 on success; or -1 on error.
+ * Return 0 on success; or error code defined by errno.h.
  */
 int
 libscrypt_scrypt(const uint8_t * passwd, size_t passwdlen,
@@ -337,5 +337,5 @@ err1:
 	free(B0);
 err0:
 	/* Failure! */
-	return (-1);
+	return (errno);
 }
