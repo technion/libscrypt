@@ -36,7 +36,6 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 		const char *hash, char *mcf)
 {
 
-
 	uint32_t t, params;
 	int s;
 

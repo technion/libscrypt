@@ -32,6 +32,7 @@ int libscrypt_check(char *mcf, const char *password)
 	* >0 correct password
 	*/
 
+	char *saveptr = NULL;
 	uint32_t params;
 	uint64_t N;
 	uint8_t r, p;
@@ -47,11 +48,11 @@ int libscrypt_check(char *mcf, const char *password)
 		return -1;
 	}
 
-	tok = strtok(mcf, "$");
+	tok = strtok_r(mcf, "$", &saveptr);
 	if ( !tok )
 		return -1;
 
-	tok = strtok(NULL, "$");
+	tok = strtok_r(NULL, "$", &saveptr);
 
 	if ( !tok )
 		return -1;
@@ -60,7 +61,7 @@ int libscrypt_check(char *mcf, const char *password)
 	if ( params == 0 )
 		return -1;
 
-	tok = strtok(NULL, "$");
+	tok = strtok_r(NULL, "$", &saveptr);
 
 	if ( !tok )
 		return -1;
@@ -95,7 +96,7 @@ int libscrypt_check(char *mcf, const char *password)
 	if (retval == 0)
 		return -1;
 
-	tok = strtok(NULL, "$");
+	tok = strtok_r(NULL, "$", &saveptr);
 
 	if ( !tok )
 		return -1;

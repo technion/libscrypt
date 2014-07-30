@@ -29,7 +29,7 @@ check: all
 
 devtest:
 	splint crypto_scrypt-hexconvert.c 
-	splint crypto-mcf.c crypto_scrypt-check.c crypto_scrypt-hash.c
+	splint crypto-mcf.c crypto_scrypt-check.c crypto_scrypt-hash.c -unrecog
 	splint crypto-scrypt-saltgen.c +posixlib -compdef
 	valgrind ./reference
 
