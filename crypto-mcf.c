@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <float.h>
-
+#include <stdint.h>
 #include <math.h>
 
 #ifndef S_SPLINT_S /* Including this here triggers a known bug in splint */
@@ -13,13 +13,16 @@
 #include "libscrypt.h"
 
 /* ilog2 for powers of two */
-static int scrypt_ilog2(uint32_t n)
+static uint32_t scrypt_ilog2(uint32_t n)
 {
+#ifndef S_SPLINT_S
+
 	/* Check for a valid power of two */
 	if (n < 2 || (n & (n - 1)))
 		return -1;
-	int t = 1;
-	while ((1 << t) < n)
+#endif
+	uint32_t t = 1;
+	while (((uint32_t)1 << t) < n)
 	{
 		if(t > SCRYPT_SAFE_N)
 			return -1; /* Check for insanity */
@@ -34,8 +37,8 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 {
 
 
-	uint32_t params;
-	int s, t;
+	uint32_t t, params;
+	int s;
 
 	if(!mcf || !hash)
 		return 0;
