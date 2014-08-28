@@ -121,14 +121,14 @@ static const char Pad64 = '=';
 
 int
 libscrypt_b64_encode(src, srclength, target, targsize)
-	u_char const *src;
+	unsigned char const *src;
 	size_t srclength;
 	char *target;
 	size_t targsize;
 {
 	size_t datalength = 0;
-	u_char input[3];
-	u_char output[4];
+	unsigned char input[3];
+	unsigned char output[4];
 	unsigned int i;
 
 	while (2 < srclength) {
@@ -186,12 +186,12 @@ libscrypt_b64_encode(src, srclength, target, targsize)
 int
 libscrypt_b64_decode(src, target, targsize)
 	char const *src;
-	u_char *target;
+	unsigned char *target;
 	size_t targsize;
 {
 	int state, ch;
     unsigned int tarindex;
-	u_char nextbyte;
+	unsigned char nextbyte;
 	char *pos;
 
 	state = 0;
