@@ -25,12 +25,18 @@ static uint32_t scrypt_ilog2(uint32_t n)
 	while (((uint32_t)1 << t) < n)
 	{
 		if(t > SCRYPT_SAFE_N)
-			return -1; /* Check for insanity */
+			return (uint32_t) -1; /* Check for insanity */
 		t++;
 	}
 
 	return t;
 }
+
+#ifdef _MSC_VER
+  #define SNPRINTF _snprintf
+#else
+  #define SNPRINTF snprintf
+#endif
 
 int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 		const char *hash, char *mcf)
@@ -59,7 +65,7 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 	* determined that mcf should be defined as at least SCRYPT_MCF_LEN
 	* in length 
 	*/
-	s = snprintf(mcf, SCRYPT_MCF_LEN,  SCRYPT_MCF_ID "$%06x$%s$%s", (unsigned int)params, salt, hash);
+	s = SNPRINTF(mcf, SCRYPT_MCF_LEN,  SCRYPT_MCF_ID "$%06x$%s$%s", (unsigned int)params, salt, hash);
 	if (s > SCRYPT_MCF_LEN)
 		return 0;
 

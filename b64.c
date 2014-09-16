@@ -174,7 +174,7 @@ libscrypt_b64_encode(src, srclength, target, targsize)
 	if (datalength >= targsize)
 		return (-1);
 	target[datalength] = '\0';	/* Returned value doesn't count \0. */
-	return (datalength);
+	return (int)(datalength);
 }
 
 /* skips all whitespace anywhere.

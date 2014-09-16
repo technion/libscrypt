@@ -8,6 +8,8 @@
 #include <unistd.h>
 #endif
 
+#ifndef _MSC_VER
+
 #define RNGDEV "/dev/urandom"
 
 int libscrypt_salt_gen(uint8_t *salt, size_t len)
@@ -46,3 +48,5 @@ int libscrypt_salt_gen(uint8_t *salt, size_t len)
 
 	return 0;
 }
+
+#endif
