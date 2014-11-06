@@ -16,7 +16,7 @@
 /* pow() works with doubles. Sounds like it should cast to int correctly,
 * but doesn't always. This is faster anyway
 */
-static uint16_t ipow(uint16_t base, uint32_t exp)
+static uint16_t ipow(uint16_t base, uint64_t exp)
 {
     uint16_t result = 1;
     while (exp != 0)
