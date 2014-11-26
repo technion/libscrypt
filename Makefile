@@ -42,6 +42,7 @@ install: libscrypt.so.0
 install-osx: libscrypt.so.0
 	$(MAKE_DIR) $(DESTDIR) $(DESTDIR)$(PREFIX) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCLUDEDIR)
 	$(INSTALL_DATA) -pm 0755 libscrypt.so.0 $(DESTDIR)$(LIBDIR)/libscrypt.0.dylib
+	cd $(DESTDIR)$(LIBDIR) && install_name_tool -id $(DESTDIR)$(LIBDIR)/libscrypt.0.dylib $(DESTDIR)$(LIBDIR)/libscrypt.0.dylib
 	cd $(DESTDIR)$(LIBDIR) && ln -s -f libscrypt.0.dylib $(DESTDIR)$(LIBDIR)/libscrypt.dylib
 	$(INSTALL_DATA) -pm 0644 libscrypt.h  $(DESTDIR)$(INCLUDEDIR)
 
