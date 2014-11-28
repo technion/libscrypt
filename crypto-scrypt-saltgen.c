@@ -1,3 +1,4 @@
+#if !defined(_WIN32) && (defined(__unix__) || defined(__unix) || (defined(__APPLE__) && defined(__MACH__))) //POSIX
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
@@ -46,3 +47,4 @@ int libscrypt_salt_gen(uint8_t *salt, size_t len)
 
 	return 0;
 }
+#endif
