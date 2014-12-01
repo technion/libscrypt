@@ -91,6 +91,7 @@ v1.18: God damnit Apple
 
 v1.19: Code safety cleanups. Now running Coverity.
 
+v1.20: Bigfixes involving large N values, return values on error
 
 <a href="https://scan.coverity.com/projects/2173">
   <img alt="Coverity Scan Build Status"
