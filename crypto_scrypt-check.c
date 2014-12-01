@@ -96,7 +96,7 @@ int libscrypt_check(char *mcf, const char *password)
             (uint32_t)retval, N, r, p, hashbuf, sizeof(hashbuf));
 
 	if (retval != 0)
-		return retval;
+		return -1;
 
 	retval = libscrypt_b64_encode((unsigned char*)hashbuf, sizeof(hashbuf), 
             outbuf, sizeof(outbuf));
