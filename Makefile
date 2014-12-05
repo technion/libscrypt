@@ -33,6 +33,13 @@ devtest:
 	splint crypto-scrypt-saltgen.c +posixlib -compdef
 	valgrind ./reference
 
+asan: main.c
+	clang -O1 -g -fsanitize=address -fno-omit-frame-pointer  *.c -o asantest
+	./asantest
+	scan-build clang -O1 -g -fsanitize=memory -fno-omit-frame-pointer  *.c -o asantest
+	./asantest
+	rm -f asantest
+
 install: libscrypt.so.0
 	$(MAKE_DIR) $(DESTDIR) $(DESTDIR)$(PREFIX) $(DESTDIR)$(LIBDIR) $(DESTDIR)$(INCLUDEDIR)
 	$(INSTALL_DATA) -pm 0755 libscrypt.so.0 $(DESTDIR)$(LIBDIR)
