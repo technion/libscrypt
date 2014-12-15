@@ -6,8 +6,10 @@
 #include <stdint.h>
 #include <math.h>
 
+#ifndef _WIN32
 #ifndef S_SPLINT_S /* Including this here triggers a known bug in splint */
 #include <unistd.h>
+#endif
 #endif
 
 #include "libscrypt.h"
