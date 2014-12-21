@@ -68,6 +68,8 @@ The reference machines are Fedora, CentOS, FreeBSD and Raspbian, and the code is
 Full transparancy on the regular application of thorough testing can be found by reviewing recent test harness results here:
 http://www.lolware.net/libscrypttesting.txt
 
+Please, no more pull requests for Windows compatibility. If it's important to you - fork the project. I have no intention of pulling an OpenSSL and becoming a maze of ifdefs for platforms I don't even have a build environment for.
+
 Contact
 -------
 I can be contacted at: technion@lolware.net
