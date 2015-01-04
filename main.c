@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <errno.h>
 
 #include "b64.h"
 #include "crypto_scrypt-hexconvert.h"
@@ -42,6 +43,17 @@ int main()
 	}
 
 	printf("TEST ONE: SUCCESSFUL\n");
+
+	printf("TEST ONE and a half: Review errno on invalid input\n");
+
+	retval = libscrypt_scrypt((uint8_t*)"password",strlen("password"), (uint8_t*)"NaCl", strlen("NaCl"), 47, 1, 1, hashbuf, sizeof(hashbuf));
+
+	if(retval != -1)
+	{
+		printf("TEST ONE FAILED: Failed to detect invalid input\n");
+		exit(EXIT_FAILURE);
+	}
+	printf("TEST ONE and a half: Successfully failed on error: %s\n", strerror(errno));
 
 	/* Convert the binary string to hex representation. Outbuf must be
 	* at least sizeof(hashbuf) * 2 + 1

@@ -26,6 +26,8 @@ Sane constants have been created for N, r and p so you can create a hash like th
 
     libscrypt_hash(outbuf, "My cats's breath smells like cat food", SCRYPT_N, SCRYPT_r, SCRYPT_p);
 
+This function sets errno as required for any error conditions.
+
 Output stored in "outbuf" is stored in a standardised MCF form, which means includes the randomly created, 128 bit salt, all N, r and p values, and a BASE64 encoded version of the hash. The entire MCF can be stored in a database, and compared for use as below:
 
     retval = libscrypt_check(mcf, "pleasefailme");
