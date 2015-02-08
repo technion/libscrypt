@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include "b64.h"
+#ifdef WITH_POLARSSL
+#  include "polarssl/base64.h"
+#else
+#  include "b64.h"
+#endif
 #include "crypto_scrypt-hexconvert.h"
 #include "libscrypt.h"
 
@@ -20,6 +24,9 @@ int main()
 	char mcf2[SCRYPT_MCF_LEN];
 	char saltbuf[64];
 	int retval;
+#ifdef WITH_POLARSSL
+	size_t len;
+#endif
 	/**
 	 * libscrypt_scrypt(passwd, passwdlen, salt, saltlen, N, r, p, buf, buflen):
 	 * password; duh
@@ -29,7 +36,7 @@ int main()
 	 * In short, N is your main performance modifier. Values of r = 8, p = 1 are
 	 * standard unless you want to modify the CPU/RAM ratio.
 	int libscrypt_scrypt(const uint8_t *, size_t, const uint8_t *, size_t, uint64_t,
-    uint32_t, uint32_t, uint8_t *, size_t);
+			uint32_t, uint32_t, uint8_t *, size_t);
 */
 
 	printf("TEST ONE: Direct call to reference function with password 'password' and salt 'NaCL'\n");
@@ -125,18 +132,32 @@ int main()
 	* Correct buffer length can be determined using the below function if
 	retuired.
 	* char* dest = (char*) malloc(modp_b64_encode_len);
-    * Note that this is not an exported function
+	* Note that this is not an exported function
 	*/
 
 	printf("TEST SEVEN: BASE64 encoding the salt and hash output\n");
 
+#ifdef WITH_POLARSSL
+	len = sizeof(outbuf);
+	retval = base64_encode((unsigned char*)outbuf, &len, hashbuf, sizeof(hashbuf));
+	if(retval != 0)
+		retval = -1;
+#else
 	retval = libscrypt_b64_encode(hashbuf, sizeof(hashbuf), outbuf, sizeof(outbuf));
+#endif
 	if(retval == -1)
 	{
 		printf("TEST SEVEN FAILED\n");
 		exit(EXIT_FAILURE);
 	}
+#ifdef WITH_POLARSSL
+	len = sizeof(saltbuf);
+	retval = base64_encode((unsigned char*)saltbuf, &len, (unsigned char*)"SodiumChloride", strlen("SodiumChloride"));
+	if(retval != 0)
+		retval = -1;
+#else
 	retval = libscrypt_b64_encode((unsigned char*)"SodiumChloride", strlen("SodiumChloride"), saltbuf, sizeof(saltbuf));
+#endif
 	if(retval == -1)
 	{
 		printf("TEST SEVEN FAILED\n");
@@ -208,9 +229,16 @@ int main()
 	{
 		printf("TEST ELEVEN (salt generate) FAILED\n");
 		exit(EXIT_FAILURE);
-    }
+	}
 
+#ifdef WITH_POLARSSL
+	len = sizeof(outbuf);
+	retval = base64_encode((unsigned char*)outbuf, &len, (unsigned char*)saltbuf, SCRYPT_SALT_LEN);
+	if(retval != 0)
+		retval = -1;
+#else
 	retval = libscrypt_b64_encode((uint8_t*)saltbuf, SCRYPT_SALT_LEN, outbuf, sizeof(outbuf));
+#endif
 	if(retval == -1)
 	{
 		printf("TEST ELEVEN (b64 encode) FAILED\n");
