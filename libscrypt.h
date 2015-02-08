@@ -34,7 +34,7 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 	const char *hash, char *mcf);
 
 #ifndef _MSC_VER
-/* Generates a salt. Uses /dev/urandom/
+/* Generates a salt. Uses /dev/urandom/ or CryptGenRandom(for windows)
  */
 int libscrypt_salt_gen(/*@out@*/ uint8_t *rand, size_t len);
 
