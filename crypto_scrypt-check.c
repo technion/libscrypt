@@ -93,9 +93,7 @@ int libscrypt_check(char *mcf, const char *password)
 		return -1;
 
 	if(slow_equals(tok, outbuf) == 0)
-	{
 		return 0;
-	}
 
 	return 1; /* This is the "else" condition */
 }
