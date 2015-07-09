@@ -1,6 +1,6 @@
 
 /* BASE64 libraries used internally - should not need to be packaged */
-
+#include <stddef.h>
 #define b64_encode_len(A) ((A+2)/3 * 4 + 1)
 #define b64_decode_len(A) (A / 4 * 3 + 2)
 

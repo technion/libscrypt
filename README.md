@@ -72,6 +72,10 @@ http://www.lolware.net/libscrypttesting.txt
 
 Please, no more pull requests for Windows compatibility. If it's important to you - fork the project. I have no intention of pulling an OpenSSL and becoming a maze of ifdefs for platforms I don't even have a build environment for.
 
+I utilise Facebook's "infer" static analyser, in addition to clang's analyzer. Command to run is:
+
+    infer -- make
+
 Contact
 -------
 I can be contacted at: technion@lolware.net
