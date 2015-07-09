@@ -59,7 +59,17 @@ int libscrypt_check(char *mcf, const char *password);
 			  * a blocker for insane defines
 			  */
 #define SCRYPT_SALT_LEN 16 /* This is just a recommended size */
-#define SCRYPT_MCF_LEN 125 /* mcf is 120 byte + nul */
+/* Standard MCF is:
+   $s1 Identifier, three chars
+   $0e0810 Work order and separator, six chars
+   Formula for binary to base64 length = ceil(n/3)*4
+   $pcL+DWle903AXcKJVwMffA== Salt is 16 bytes, or 24 in Base64
+   $dn+9ujljVc5JTJMC2fYu1ZEHdJyqYkOurmcrBQbMHUfnD6qxbTmNiR075ohNBZjvp66E2aV1pfOrmyNHUefjMg== Hash is 64 bytes, or 88 in Base64.
+   Work order, salt and hash have separators (3)
+   3 + 6 + 24 + 88 + 3 + null byte = 25
+   This is rounded up to a multiple of four for alignment
+*/
+#define SCRYPT_MCF_LEN 128
 #define SCRYPT_MCF_ID "$s1"
 #define SCRYPT_N 16384
 #define SCRYPT_r 8
