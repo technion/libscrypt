@@ -36,7 +36,7 @@ devtest:
 asan: main.c
 	clang -O1 -g -fsanitize=address -fno-omit-frame-pointer  *.c -o asantest
 	./asantest
-	scan-build clang -O1 -g -fsanitize=memory -fno-omit-frame-pointer  *.c -o asantest
+	scan-build clang -O1 -g -fsanitize=undefined -fno-omit-frame-pointer  *.c -o asantest
 	./asantest
 	rm -f asantest
 
