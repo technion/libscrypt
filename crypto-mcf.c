@@ -66,7 +66,7 @@ int libscrypt_mcf(uint32_t N, uint32_t r, uint32_t p, const char *salt,
 	* in length 
 	*/
 	s = SNPRINTF(mcf, SCRYPT_MCF_LEN,  SCRYPT_MCF_ID "$%06x$%s$%s", (unsigned int)params, salt, hash);
-	if (s > SCRYPT_MCF_LEN)
+	if (s >= SCRYPT_MCF_LEN)
 		return 0;
 
 	return 1;
