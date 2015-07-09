@@ -66,7 +66,7 @@ int libscrypt_check(char *mcf, const char *password);
    $pcL+DWle903AXcKJVwMffA== Salt is 16 bytes, or 24 in Base64
    $dn+9ujljVc5JTJMC2fYu1ZEHdJyqYkOurmcrBQbMHUfnD6qxbTmNiR075ohNBZjvp66E2aV1pfOrmyNHUefjMg== Hash is 64 bytes, or 88 in Base64.
    Work order, salt and hash have separators (3)
-   3 + 6 + 24 + 88 + 3 + null byte = 25
+   3 + 6 + 24 + 88 + 3 + null byte = 125
    This is rounded up to a multiple of four for alignment
 */
 #define SCRYPT_MCF_LEN 128
