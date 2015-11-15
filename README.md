@@ -62,6 +62,8 @@ BUGS
 SCRYPT_* constants are probably a little high for something like a Raspberry pi. Using '1' as SCRYPT_p is acceptable from a security and performance standpoint if needed. 
 Experiments were performed with using memset() to zero out passwords as they were checked. This often caused issues with calling applications where the password based have been passed as a const*. We highly recommend implementing your own zeroing function the moment this library is called.
 
+There is apparently an issue when used on Samsung (and perhaps Android in general) devices. See [this issue](https://github.com/technion/libscrypt/issues/39) for more information.
+
 Notes on Code Development
 ------------------------
 
