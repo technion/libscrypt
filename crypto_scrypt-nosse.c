@@ -36,7 +36,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "sha256.h"
+#ifdef WITH_POLARSSL
+#  include "polarssl/pkcs5.h"
+#else
+#  include "sha256.h"
+#endif
 #include "sysendian.h"
 
 #include "libscrypt.h"
@@ -240,6 +244,10 @@ libscrypt_scrypt(const uint8_t * passwd, size_t passwdlen,
 	uint32_t * V;
 	uint32_t * XY;
 	uint32_t i;
+#ifdef WITH_POLARSSL
+	md_context_t sha256_ctx;
+	const md_info_t *info_sha256 = md_info_from_type(POLARSSL_MD_SHA256);
+#endif
 
 	/* Sanity-check parameters. */
 #if SIZE_MAX > UINT32_MAX
@@ -308,7 +316,14 @@ libscrypt_scrypt(const uint8_t * passwd, size_t passwdlen,
 #endif
 
 	/* 1: (B_0 ... B_{p-1}) <-- PBKDF2(P, S, 1, p * MFLen) */
+#ifdef WITH_POLARSSL
+	md_init(&sha256_ctx);
+	md_init_ctx(&sha256_ctx, info_sha256);
+	pkcs5_pbkdf2_hmac(&sha256_ctx, passwd, passwdlen, salt, saltlen, 1, p * 128 * r, B);
+	md_free(&sha256_ctx);
+#else
 	libscrypt_PBKDF2_SHA256(passwd, passwdlen, salt, saltlen, 1, B, p * 128 * r);
+#endif
 
 	/* 2: for i = 0 to p - 1 do */
 	for (i = 0; i < p; i++) {
@@ -317,7 +332,14 @@ libscrypt_scrypt(const uint8_t * passwd, size_t passwdlen,
 	}
 
 	/* 5: DK <-- PBKDF2(P, B, 1, dkLen) */
+#ifdef WITH_POLARSSL
+	md_init(&sha256_ctx);
+	md_init_ctx(&sha256_ctx, info_sha256);
+	pkcs5_pbkdf2_hmac(&sha256_ctx, passwd, passwdlen, B, p * 128 * r, 1, buflen, buf);
+	md_free(&sha256_ctx);
+#else
 	libscrypt_PBKDF2_SHA256(passwd, passwdlen, B, p * 128 * r, 1, buf, buflen);
+#endif
 
 	/* Free memory. */
 #ifdef MAP_ANON

@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "b64.h"
+#ifdef WITH_POLARSSL
+#  include "polarssl/base64.h"
+#else
+#  include "b64.h"
+#endif
 #include "slowequals.h"
 #include "libscrypt.h"
 
@@ -32,6 +36,9 @@ int libscrypt_check(char *mcf, const char *password)
 	char outbuf[128];
 	uint8_t salt[32];
 	char *tok;
+#ifdef WITH_POLARSSL
+	size_t dlen;
+#endif
 
     if(mcf == NULL)
     {
@@ -76,9 +83,18 @@ int libscrypt_check(char *mcf, const char *password)
 	*/
 
 	memset(salt, 0, sizeof(salt)); /* Keeps splint happy */
+#ifdef WITH_POLARSSL
+	dlen = sizeof(salt);
+	retval = base64_decode(salt, &dlen, (unsigned char*)tok, strlen(tok));
+	if (retval != 0)
+		return -1;
+	else
+		retval = dlen;
+#else
 	retval = libscrypt_b64_decode(tok, (unsigned char*)salt, sizeof(salt));
 	if (retval < 1)
 		return -1;
+#endif
 
 	retval = libscrypt_scrypt((uint8_t*)password, strlen(password), salt,
             (uint32_t)retval, N, r, p, hashbuf, sizeof(hashbuf));
@@ -86,8 +102,17 @@ int libscrypt_check(char *mcf, const char *password)
 	if (retval != 0)
 		return -1;
 
+#ifdef WITH_POLARSSL
+	dlen = sizeof(outbuf);
+	retval = base64_encode((unsigned char*)outbuf, &dlen, hashbuf, sizeof(hashbuf));
+	if(retval == 0)
+		retval = 1;
+	else
+		retval = 0;
+#else
 	retval = libscrypt_b64_encode((unsigned char*)hashbuf, sizeof(hashbuf), 
             outbuf, sizeof(outbuf));
+#endif
 
 	if (retval == 0)
 		return -1;
