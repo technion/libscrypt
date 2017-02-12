@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <math.h>
 
-#ifndef S_SPLINT_S /* Including this here triggers a known bug in splint */
+#if !defined(S_SPLINT_S) && !defined(_WIN32) /* Including this here triggers a known bug in splint. Also, there is no such library on Windows */
 #include <unistd.h>
 #endif
 
