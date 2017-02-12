@@ -1,17 +1,35 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <errno.h>
-#include <fcntl.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#include <wincrypt.h>
+#pragma comment(lib, "advapi32")
+#else
+#include <sys/types.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
 #ifndef S_SPLINT_S /* Including this here triggers a known bug in splint */
 #include <unistd.h>
 #endif
+#endif
+
 
 #define RNGDEV "/dev/urandom"
 
 int libscrypt_salt_gen(uint8_t *salt, size_t len)
 {
+#ifdef _WIN32
+    HCRYPTPROV hp;
+    BOOL ret = FALSE;
+    if (CryptAcquireContextW(&hp, 0, 0, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT | CRYPT_SILENT)) {
+        ret = CryptGenRandom(hp, sz, p));
+        CryptReleaseContext(hp, 0);
+    }
+    return ret ? 0 : -1;
+#else
 	unsigned char buf[len];
 	size_t data_read = 0;
 	int urandom = open(RNGDEV, O_RDONLY);
@@ -45,4 +63,5 @@ int libscrypt_salt_gen(uint8_t *salt, size_t len)
 	memcpy(salt, buf, len);
 
 	return 0;
+#endif
 }
