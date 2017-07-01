@@ -26,7 +26,7 @@ clean:
 	rm -f *.o reference libscrypt.so* libscrypt.a endian.h
 
 check: all
-	./reference
+	LD_LIBRARY_PATH=. ./reference
 
 devtest:
 	splint crypto_scrypt-hexconvert.c 
