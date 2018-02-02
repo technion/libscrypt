@@ -173,11 +173,6 @@ SHA256_Transform(uint32_t * state, const unsigned char block[64])
 	/* 4. Mix local working variables into global state */
 	for (i = 0; i < 8; i++)
 		state[i] += S[i];
-
-	/* Clean the stack. */
-	memset(W, 0, 256);
-	memset(S, 0, 32);
-	t0 = t1 = 0;
 }
 
 static unsigned char PAD[64] = {
