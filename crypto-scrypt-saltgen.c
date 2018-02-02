@@ -4,6 +4,10 @@
 #include <errno.h>
 #include <fcntl.h>
 
+/* Disable on Windows, there is no /dev/urandom.
+   Link-time error is better than runtime error. */
+#ifndef _WIN32
+
 #ifndef S_SPLINT_S /* Including this here triggers a known bug in splint */
 #include <unistd.h>
 #endif
@@ -46,3 +50,5 @@ int libscrypt_salt_gen(uint8_t *salt, size_t len)
 
 	return 0;
 }
+
+#endif
