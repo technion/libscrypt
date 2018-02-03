@@ -315,9 +315,6 @@ libscrypt_HMAC_SHA256_Init(HMAC_SHA256_CTX * ctx, const void * _K, size_t Klen)
 	for (i = 0; i < Klen; i++)
 		pad[i] ^= K[i];
 	libscrypt_SHA256_Update(&ctx->octx, pad, 64);
-
-	/* Clean the stack. */
-	memset(khash, 0, 32);
 }
 
 /* Add bytes to the HMAC-SHA256 operation. */
@@ -343,9 +340,6 @@ libscrypt_HMAC_SHA256_Final(unsigned char digest[32], HMAC_SHA256_CTX * ctx)
 
 	/* Finish the outer SHA256 operation. */
 	libscrypt_SHA256_Final(digest, &ctx->octx);
-
-	/* Clean the stack. */
-	memset(ihash, 0, 32);
 }
 
 /**
@@ -400,7 +394,4 @@ libscrypt_PBKDF2_SHA256(const uint8_t * passwd, size_t passwdlen, const uint8_t 
 			clen = 32;
 		memcpy(&buf[i * 32], T, clen);
 	}
-
-	/* Clean PShctx, since we never called _Final on it. */
-	memset(&PShctx, 0, sizeof(HMAC_SHA256_CTX));
 }
