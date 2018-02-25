@@ -19,5 +19,5 @@ include_directories : inc,
 c_args: ['-Wall', '-O2', '-ffast-math', '-g', '-D_FORTIFY_SOURCE=2', '-fstack-protector'],
 install: true)
 
-urbit_scrypt_dep = declare_dependency(include_directories : inc,
+libscrypt_dep = declare_dependency(include_directories : inc,
   link_with : lib)
