@@ -53,7 +53,10 @@ int main()
 		printf("TEST ONE FAILED: Failed to detect invalid input\n");
 		exit(EXIT_FAILURE);
 	}
-	printf("TEST ONE and a half: Successfully failed on error: %s\n", strerror(errno));
+	
+	char errormsg[64];
+	strerror_s(errormsg, 64, errno);
+	printf("TEST ONE and a half: Successfully failed on error: %s\n", errormsg);
 
 	/* Convert the binary string to hex representation. Outbuf must be
 	* at least sizeof(hashbuf) * 2 + 1
