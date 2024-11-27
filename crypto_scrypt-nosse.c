@@ -41,35 +41,19 @@
 
 #include "libscrypt.h"
 
-static void blkcpy(void *, void *, size_t);
-static void blkxor(void *, void *, size_t);
+static void blkxor(uint32_t * dest, uint32_t * src, size_t len);
 static void salsa20_8(uint32_t[16]);
 static void blockmix_salsa8(uint32_t *, uint32_t *, uint32_t *, size_t);
-static uint64_t integerify(void *, size_t);
+static uint64_t integerify(uint32_t * B, size_t r);
 static void smix(uint8_t *, size_t, uint64_t, uint32_t *, uint32_t *);
 
 static void
-blkcpy(void * dest, void * src, size_t len)
+blkxor(uint32_t * dest, uint32_t * src, size_t len)
 {
-	size_t * D = dest;
-	size_t * S = src;
-	size_t L = len / sizeof(size_t);
 	size_t i;
 
-	for (i = 0; i < L; i++)
-		D[i] = S[i];
-}
-
-static void
-blkxor(void * dest, void * src, size_t len)
-{
-	size_t * D = dest;
-	size_t * S = src;
-	size_t L = len / sizeof(size_t);
-	size_t i;
-
-	for (i = 0; i < L; i++)
-		D[i] ^= S[i];
+	for (i = 0; i < len / 4; i++)
+		dest[i] ^= src[i];
 }
 
 /**
@@ -82,7 +66,7 @@ salsa20_8(uint32_t B[16])
 	uint32_t x[16];
 	size_t i;
 
-	blkcpy(x, B, 64);
+	memcpy(x, B, 64);
 	for (i = 0; i < 8; i += 2) {
 #define R(a,b) (((a) << (b)) | ((a) >> (32 - (b))))
 		/* Operate on columns. */
@@ -128,7 +112,7 @@ blockmix_salsa8(uint32_t * Bin, uint32_t * Bout, uint32_t * X, size_t r)
 	size_t i;
 
 	/* 1: X <-- B_{2r - 1} */
-	blkcpy(X, &Bin[(2 * r - 1) * 16], 64);
+	memcpy(X, &Bin[(2 * r - 1) * 16], 64);
 
 	/* 2: for i = 0 to 2r - 1 do */
 	for (i = 0; i < 2 * r; i += 2) {
@@ -138,7 +122,7 @@ blockmix_salsa8(uint32_t * Bin, uint32_t * Bout, uint32_t * X, size_t r)
 
 		/* 4: Y_i <-- X */
 		/* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
-		blkcpy(&Bout[i * 8], X, 64);
+		memcpy(&Bout[i * 8], X, 64);
 
 		/* 3: X <-- H(X \xor B_i) */
 		blkxor(X, &Bin[i * 16 + 16], 64);
@@ -146,7 +130,7 @@ blockmix_salsa8(uint32_t * Bin, uint32_t * Bout, uint32_t * X, size_t r)
 
 		/* 4: Y_i <-- X */
 		/* 6: B' <-- (Y_0, Y_2 ... Y_{2r-2}, Y_1, Y_3 ... Y_{2r-1}) */
-		blkcpy(&Bout[i * 8 + r * 16], X, 64);
+		memcpy(&Bout[i * 8 + r * 16], X, 64);
 	}
 }
 
@@ -155,10 +139,9 @@ blockmix_salsa8(uint32_t * Bin, uint32_t * Bout, uint32_t * X, size_t r)
  * Return the result of parsing B_{2r-1} as a little-endian integer.
  */
 static uint64_t
-integerify(void * B, size_t r)
+integerify(uint32_t * B, size_t r)
 {
-	uint32_t * X = (void *)((uintptr_t)(B) + (2 * r - 1) * 64);
-
+	const uint32_t * X = B + (2 * r - 1) * 16;
 	return (((uint64_t)(X[1]) << 32) + X[0]);
 }
 
@@ -187,13 +170,13 @@ smix(uint8_t * B, size_t r, uint64_t N, uint32_t * V, uint32_t * XY)
 	/* 2: for i = 0 to N - 1 do */
 	for (i = 0; i < N; i += 2) {
 		/* 3: V_i <-- X */
-		blkcpy(&V[i * (32 * r)], X, 128 * r);
+		memcpy(&V[i * (32 * r)], X, 128 * r);
 
 		/* 4: X <-- H(X) */
 		blockmix_salsa8(X, Y, Z, r);
 
 		/* 3: V_i <-- X */
-		blkcpy(&V[(i + 1) * (32 * r)], Y, 128 * r);
+		memcpy(&V[(i + 1) * (32 * r)], Y, 128 * r);
 
 		/* 4: X <-- H(X) */
 		blockmix_salsa8(Y, X, Z, r);
